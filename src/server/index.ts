@@ -1,12 +1,8 @@
-// import path from 'path';
-import express from 'express';
+import { app } from './server';
 
-const app = express();
 
-app.use(express.static('./dist'));
+const port = process.env.PORT || 8080;
 
-app.get('/', (req, res) => {
-    res.status(200).sendFile('index.html');
+app.listen(port, () => {
+    console.log(`Server is running on ${port}.`);
 });
-
-app.listen(8080);
