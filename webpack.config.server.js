@@ -26,7 +26,7 @@ module.exports = {
         extensions: [ '.tsx', '.ts', '.js' ],
     },
     plugins: [
-        new NodemonPlugin()
+        new NodemonPlugin(),
     ],
     externals: [ nodeExternals() ],
 };

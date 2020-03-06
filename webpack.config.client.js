@@ -29,6 +29,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './src/client/public/index.html'),
         }),
-        new LiveReloadPlugin()
+        new LiveReloadPlugin(),
     ]
 };
