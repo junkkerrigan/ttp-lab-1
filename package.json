@@ -16,9 +16,8 @@
     "build:client": "webpack --config webpack.config.client.js",
     "build": "npm run build:server && npm run build:client",
     "serve": "node ./dist/server.bundle.js",
-    "prestart": "npm run build",
-    "start": "npm run serve && npm run open:page",
-    "poststart": "rm -rf ./dist"
+    "prestart": "rm -rf ./dist && npm run build",
+    "start": "run-s open:page serve"
   },
   "dependencies": {
     "cors": "^2.8.5",
