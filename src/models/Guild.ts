@@ -1,28 +1,37 @@
-import { DataTypes, Model, ModelCtor } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
-import { sequelize } from './sequelize';
+import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
+import { ProjectModelsStore } from './modelsStore';
 
-export class Guild extends Model {
+export interface IGuild extends IBaseModel {
+    name: string;
+    description: string;
+}
+
+export interface IGuildConstructor extends IBaseModelConstructor {
+    new (): Guild;
+}
+
+export class Guild extends BaseModel implements IGuild {
     public name!: string;
     public description!: string;
 
-    static associate(models: Record<string, ModelCtor<any>>) {
+    static associate(models: ProjectModelsStore) {
         Guild.hasMany(models.Event, { foreignKey: 'guild' });
         Guild.hasMany(models.User, { foreignKey: 'guild' })
     }
 }
 
-Guild.init({
+Guild.initModel({
     name: {
         type: DataTypes.STRING,
-        allowNull: false,
         unique: true,
     },
     description: {
         type: DataTypes.STRING,
+        allowNull: true,
         defaultValue: ''
     },
 }, {
     tableName: 'guilds',
-    sequelize
 });

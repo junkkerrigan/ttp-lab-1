@@ -1,14 +1,23 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
-import { sequelize } from './sequelize';
+import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
+import { Maintenance } from './Maintenance';
 
-export class Contribution extends Model {
-    public readonly id!: number;
+export interface IContribution extends IBaseModel {
+    contributorId: number;
+    projectId: number;
+}
+
+export interface IContributionConstructor extends IBaseModelConstructor {
+    new (): Contribution;
+}
+
+export class Contribution extends BaseModel implements IContribution {
     public contributorId!: number;
     public projectId!: number;
 }
 
-Contribution.init({
+Contribution.initModel({
     contributorId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -21,5 +30,4 @@ Contribution.init({
     }
 }, {
     tableName: 'contributions',
-    sequelize
 });

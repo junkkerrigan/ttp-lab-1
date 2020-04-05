@@ -1,31 +1,39 @@
-import { DataTypes, Model, ModelCtor } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
-import { sequelize } from './sequelize';
+import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
+import { ProjectModelsStore } from './modelsStore';
 
-export class Company extends Model {
-    public readonly id!: number;
+export interface ICompany extends IBaseModel {
+    name: string;
+    description: string;
+    chief: string;
+}
+
+export interface ICompanyConstructor extends IBaseModelConstructor {
+    new (): Company;
+}
+
+export class Company extends BaseModel implements ICompany {
     public name!: string;
     public description!: string;
     public chief!: string;
 
-    static associate(models: Record<string, ModelCtor<any>>) {
+    static associate(models: ProjectModelsStore) {
         Company.hasMany(models.Product, { foreignKey: 'company' });
     }
 }
 
-Company.init({
+Company.initModel({
     name: {
         type: DataTypes.STRING,
-        allowNull: false
     },
     description: {
         type: DataTypes.STRING,
+        allowNull: true,
     },
     chief: {
         type: DataTypes.STRING,
-        allowNull: false,
     },
 }, {
     tableName: 'companies',
-    sequelize
 });

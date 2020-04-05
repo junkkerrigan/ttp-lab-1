@@ -1,19 +1,29 @@
-import { DataTypes, Model, ModelCtor } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
-import { sequelize } from './sequelize';
+import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
+import { ProjectModelsStore } from './modelsStore';
 
-export class Device extends Model {
-    public readonly id!: number;
+export interface IDevice extends IBaseModel {
+    type: string;
+    manufacturer: string;
+    model: string;
+}
+
+export interface IDeviceConstructor extends IBaseModelConstructor {
+    new (): Device;
+}
+
+export class Device extends BaseModel implements IDevice {
     public type!: string;
     public manufacturer!: string;
     public model!: string;
 
-    static associate(models: Record<string, ModelCtor<any>>) {
+    static associate(models: ProjectModelsStore) {
         Device.belongsTo(models.User, { foreignKey: 'user' });
     }
 }
 
-Device.init({
+Device.initModel({
     type: {
         type: DataTypes.STRING,
     },
@@ -26,5 +36,4 @@ Device.init({
     },
 }, {
     tableName: 'devices',
-    sequelize
 });

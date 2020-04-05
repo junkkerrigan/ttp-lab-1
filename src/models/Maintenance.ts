@@ -1,14 +1,23 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
-import { sequelize } from './sequelize';
+import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
+import { OpenSourceProject } from './OpenSourceProject';
 
-export class Maintenance extends Model {
-    public readonly id!: number;
+export interface IMaintenance extends IBaseModel {
+    maintainerId: number;
+    projectId: number;
+}
+
+export interface IMaintenanceConstructor extends IBaseModelConstructor {
+    new (): Maintenance;
+}
+
+export class Maintenance extends BaseModel implements IMaintenance {
     public maintainerId!: number;
     public projectId!: number;
 }
 
-Maintenance.init({
+Maintenance.initModel({
     contributorId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -21,5 +30,4 @@ Maintenance.init({
     }
 }, {
     tableName: 'maintenances',
-    sequelize
 });

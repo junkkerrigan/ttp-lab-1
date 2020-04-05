@@ -1,26 +1,34 @@
-import { DataTypes, Model, ModelCtor } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
-import { sequelize } from './sequelize';
+import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
+import { ProjectModelsStore } from './modelsStore';
 
-export class Event extends Model {
-    public readonly id!: number;
+export interface IEvent extends IBaseModel {
+    name: string;
+    description: string;
+}
+
+export interface IEventConstructor extends IBaseModelConstructor {
+    new (): Event;
+}
+
+export class Event extends BaseModel implements IEvent {
     public name!: string;
     public description!: string;
 
-    static associate(models: Record<string, ModelCtor<any>>) {
+    static associate(models: ProjectModelsStore) {
         Event.belongsTo(models.Guild, { foreignKey: 'organizer' });
     }
 }
 
-Event.init({
+Event.initModel({
     name: {
         type: DataTypes.STRING,
-        allowNull: false
     },
     description: {
         type: DataTypes.STRING,
+        allowNull: true
     },
 }, {
     tableName: 'events',
-    sequelize
 });

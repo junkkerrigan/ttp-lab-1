@@ -1,5 +1,5 @@
-import { app } from './app';
 import { models, sequelize } from '../models';
+import { app } from './app';
 import { RESET_DB } from './config';
 
 const port = process.env.PORT || 8080;

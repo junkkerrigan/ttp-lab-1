@@ -1,18 +1,26 @@
-import { Sequelize, DataTypes, Model, ModelCtor } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
-import { sequelize } from './sequelize';
 import { Maintenance } from './Maintenance';
 import { Contribution } from './Contribution';
+import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
+import { ProjectModelsStore } from './modelsStore';
 
-class User extends Model {
-    public readonly id!: number;
+export interface IUser extends IBaseModel {
+    username: string;
+    password: string;
+    status: string;
+}
+
+export interface IUserConstructor extends IBaseModelConstructor {
+    new (): User;
+}
+
+export class User extends BaseModel implements IUser {
     public username!: string;
     public password!: string;
-    public readonly registrationDate!: Date;
-    public updatedAt!: Date;
     public status!: string;
 
-    static associate(models: Record<string, ModelCtor<any>>) {
+    static associate(models: ProjectModelsStore) {
         this.hasMany(models.Device, { foreignKey: 'user' });
         this.belongsTo(models.Guild, { foreignKey: 'guild' });
         this.belongsTo(models.Product, { foreignKey: 'product' });
@@ -29,23 +37,18 @@ class User extends Model {
     }
 }
 
-User.init({
+User.initModel({
     username: {
-        type: DataTypes.STRING(21123),
-        allowNull: false,
+        type: DataTypes.STRING,
         unique: true,
     },
     password: {
-        type: DataTypes.STRING(312312),
-        allowNull: false,
+        type: DataTypes.STRING,
     },
     status: {
-        type: DataTypes.STRING(312312),
+        type: DataTypes.STRING,
+        allowNull: true,
     },
 }, {
     tableName: 'users',
-    createdAt: 'registrationDate',
-    sequelize
 });
-
-export { User };

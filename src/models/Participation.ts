@@ -1,25 +1,26 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
-import { sequelize } from './sequelize';
+import { BaseModel, IBaseModel } from './BaseModel';
 
-export class Participation extends Model {
-    public readonly id!: number;
+export interface IParticipation extends IBaseModel {
+    participantId: number;
+    eventId: number;
+}
+
+export class Participation extends BaseModel implements IParticipation {
     public participantId!: number;
     public eventId!: number;
 }
 
-Participation.init({
+Participation.initModel({
     participantId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         unique: true,
     },
     eventId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         unique: true,
     }
 }, {
     tableName: 'participations',
-    sequelize
 });
