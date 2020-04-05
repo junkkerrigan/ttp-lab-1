@@ -26,12 +26,9 @@ export abstract class BaseModel extends Model implements IBaseModel {
         if (PREFER_RESTRICT_NULL) {
             attributes = Object.entries(attributes).reduce<ModelAttributes>(
                 (acc, [key, value]) => {
-                    if (typeof value === 'string') {
-                        throw new Error('Attributes cannot be a string.');
-                    }
-
-                    if (!(value as ModelAttributeColumnOptions).allowNull) {
-                        (value as ModelAttributeColumnOptions).allowNull = false;
+                    value = value as ModelAttributeColumnOptions;
+                    if (typeof value.allowNull !== 'boolean') {
+                        value.allowNull = false;
                     }
                     return {
                         ...acc,

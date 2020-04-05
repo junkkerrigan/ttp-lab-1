@@ -1,4 +1,7 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-ReactDOM.render(<div>Hello, bastards!</div>, document.querySelector('#root'));
+ReactDOM.render(
+    <div>Hello, bastards! Client dude here \m/.</div>,
+    document.querySelector('#root')
+);
