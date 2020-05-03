@@ -1,10 +1,10 @@
-import { User, IUser, IUserConstructor } from './User';
-import { Guild, IGuild, IGuildConstructor } from './Guild';
-import { OpenSourceProject, IOpenSourceProject, IOpenSourceProjectConstructor } from './OpenSourceProject';
-import { Device, IDevice, IDeviceConstructor } from './Device';
-import { Event, IEvent, IEventConstructor  } from './Event';
-import { Product, IProduct, IProductConstructor } from './Product';
-import { Company, ICompany, ICompanyConstructor } from './Company';
+import { User, IUser, IUserConstructor } from './definitions/User';
+import { Guild, IGuild, IGuildConstructor } from './definitions/Guild';
+import { OpenSourceProject, IOpenSourceProject, IOpenSourceProjectConstructor } from './definitions/OpenSourceProject';
+import { Device, IDevice, IDeviceConstructor } from './definitions/Device';
+import { Event, IEvent, IEventConstructor  } from './definitions/Event';
+import { Product, IProduct, IProductConstructor } from './definitions/Product';
+import { Company, ICompany, ICompanyConstructor } from './definitions/Company';
 
 export interface ProjectModelsStore {
     User: IUser & IUserConstructor,
@@ -27,9 +27,5 @@ export const models: ProjectModelsStore = {
 };
 
 (Object.keys(models) as (keyof ProjectModelsStore)[]).forEach(modelName => {
-    try {
-        models[modelName].associate && models[modelName].associate(models);
-    } catch (e) {
-        console.log(e);
-    }
+    models[modelName].associate && models[modelName].associate(models);
 });

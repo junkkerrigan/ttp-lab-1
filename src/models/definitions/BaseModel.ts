@@ -2,9 +2,9 @@ import {
     Model, ModelCtor, ModelAttributeColumnOptions, InitOptions, ModelAttributes
 } from 'sequelize';
 
-import { sequelize } from './sequelize';
-import { ProjectModelsStore } from './modelsStore';
-import { PREFER_RESTRICT_NULL } from './config';
+import { sequelize } from '../sequelize';
+import { ProjectModelsStore } from '../store';
+import { PREFER_RESTRICT_NULL } from '../config';
 
 export interface IBaseModel {
     readonly id: number;
@@ -47,6 +47,4 @@ export abstract class BaseModel extends Model implements IBaseModel {
             }
         );
     };
-
-    static associate(models: ProjectModelsStore): void {};
 }

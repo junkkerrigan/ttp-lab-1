@@ -1,8 +1,10 @@
+require('dotenv').config();
+
 import { models, sequelize } from '../models';
 import { app } from './app';
 import { RESET_DB } from './config';
 
-const port = process.env.PORT || 8080;
+const port = process.env.SERVER_PORT || 8080;
 
 (async () => {
     await sequelize.sync({ force: RESET_DB });
@@ -16,6 +18,6 @@ const port = process.env.PORT || 8080;
         console.log(e);
     }
     app.listen(port, () => {
-        console.log(`Server is running on ${port}`);
+        console.log(`Server is running on ${port}.`);
     })
 })();

@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
 import { Maintenance } from './Maintenance';
 import { Contribution } from './Contribution';
-import { ProjectModelsStore } from './modelsStore';
+import { ProjectModelsStore } from '../store';
 
 export interface IOpenSourceProject extends IBaseModel {
     name: string;

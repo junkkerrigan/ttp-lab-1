@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 import { Maintenance } from './Maintenance';
 import { Contribution } from './Contribution';
 import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
-import { ProjectModelsStore } from './modelsStore';
+import { ProjectModelsStore } from '../store';
 
 export interface IUser extends IBaseModel {
     username: string;

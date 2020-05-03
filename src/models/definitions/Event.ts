@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 
 import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
-import { ProjectModelsStore } from './modelsStore';
+import { ProjectModelsStore } from '../store';
 
 export interface IEvent extends IBaseModel {
     name: string;
