@@ -1,5 +1,7 @@
+const { DB_NAME, DB_USER, DB_PASSWORD } = process.env;
+
 export const config = {
-    DATABASE: process.env.DB_NAME || 'game_of_development',
-    DATABASE_USER: process.env.DB_USER || 'andriipav',
-    DATABASE_PASSWORD: process.env.DB_PASSWORD || '726721gfd',
+    DB_NAME: DB_NAME || 'default',
+    DB_USER: DB_USER || 'default',
+    DB_PASSWORD: DB_PASSWORD || 'default',
 };

@@ -4,8 +4,8 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     res.status(200).send(
-        await req.context.models.User.findAll()
+        await req.context.models.Company.findAll()
     );
 });
 
-export { router as usersRouter };
+export { router as companiesRouter };
