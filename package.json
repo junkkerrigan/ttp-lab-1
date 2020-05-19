@@ -12,12 +12,12 @@
     "tab:watch:server": "ttab -t 'Watch server' npm run watch:server",
     "tab:watch:client": "ttab -t 'Watch client' npm run watch:client",
     "watch": "run-s tab:watch:client tab:watch:server open",
+    "prebuild": "rm -rf ./dist",
     "build:server": "webpack --config webpack.config.server.js",
     "build:client": "webpack --config webpack.config.client.js",
     "build": "npm run build:server && npm run build:client",
     "serve": "node ./dist/server.bundle.js",
-    "prestart": "rm -rf ./dist && npm run build",
-    "start": "run-s serve open"
+    "start": "npm run build && run-s serve open"
   },
   "dependencies": {
     "cors": "^2.8.5",

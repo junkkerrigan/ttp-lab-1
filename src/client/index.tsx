@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { App } from './components/App';
 
 ReactDOM.render(
-    <div>Hello, bastards! Stunning client dude here \m/.</div>,
+    <App />,
     document.querySelector('#root')
 );
