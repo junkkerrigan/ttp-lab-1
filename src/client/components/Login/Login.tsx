@@ -1,5 +1,9 @@
+import { Form, Input, Checkbox, Button } from 'antd';
+import { Store } from 'antd/lib/form/interface';
+import { ValidateErrorEntity } from 'rc-field-form/lib/interface';
 import React, { FC } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+
+import s from './Login.scss';
 
 interface LoginFields {
     name: string;
@@ -9,18 +13,57 @@ interface LoginFields {
     password: string;
 }
 
-export const Login: FC = () => {
-    const { register, control, handleSubmit, errors } = useForm<LoginFields>();
-    console.log(errors);
-    return (
-        <form onSubmit={handleSubmit(console.log)}>
-            <Controller as={<Input type='text' />} control={control} name='name' rules={{ required: true }} defaultValue='' />
-            <Controller as={<Input type='text' />} control={control} name='surname' rules={{ required: true }} defaultValue='' />
-            <Controller as={<Input type='email' />} control={control} name='email' rules={{ required: true }} defaultValue='' />
-            <Controller as={<Input type='text' />} control={control} name='username' rules={{ required: true }} defaultValue='' />
-            <Controller as={<Input type='password' />} control={control} name='password' rules={{ required: true }} defaultValue='' />
+const layout = {
+    labelCol: { span: 2 },
+    wrapperCol: { span: 4 },
+};
+const tailLayout = {
+    wrapperCol: { offset: 2, span: 4 },
+};
 
-            <button type='submit'>Submit</button>
-        </form>
+export const Login: FC = () => {
+    const onFinish = (values: Store) => {
+        console.log('Success:', values);
+    };
+
+    const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
+        console.log('Failed:', errorInfo);
+    };
+
+    return (
+        <Form
+            {...layout}
+            name="basic"
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            className={s.form}
+        >
+            <Form.Item
+                label="Username"
+                name="username"
+                rules={[{ required: true, message: 'Please input your username!' }]}
+            >
+                <Input />
+            </Form.Item>
+
+            <Form.Item
+                label="Password"
+                name="password"
+                rules={[{ required: true, message: 'Please input your password!' }]}
+            >
+                <Input.Password />
+            </Form.Item>
+
+            <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+                <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+
+            <Form.Item {...tailLayout}>
+                <Button type="primary" htmlType="submit">
+                    Submit
+                </Button>
+            </Form.Item>
+        </Form>
     );
 }
