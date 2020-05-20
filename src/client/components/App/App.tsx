@@ -5,7 +5,9 @@ import { Login } from '../Login';
 export const App: FC = () => {
     return (
         <Router>
-            <Route exact path='/' component={Login} />
+            <div>
+                <Route exact path='/' component={Login} />
+            </div>
         </Router>
     )
 }

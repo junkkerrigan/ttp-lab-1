@@ -14,11 +14,11 @@ interface LoginFields {
 }
 
 const layout = {
-    labelCol: { span: 2 },
-    wrapperCol: { span: 4 },
+    labelCol: { offset: 4, span: 4 },
+    wrapperCol: { span: 12 },
 };
 const tailLayout = {
-    wrapperCol: { offset: 2, span: 4 },
+    wrapperCol: { offset: 8, span: 16 },
 };
 
 export const Login: FC = () => {
@@ -31,39 +31,50 @@ export const Login: FC = () => {
     };
 
     return (
-        <Form
-            {...layout}
-            name="basic"
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            className={s.form}
-        >
-            <Form.Item
-                label="Username"
-                name="username"
-                rules={[{ required: true, message: 'Please input your username!' }]}
-            >
-                <Input />
-            </Form.Item>
+        <div className={s.container}>
+            <div className={s.formWrapper}>
+                <h1 className={s.title}>
+                    Please, provide your credentials
+                    <br />
+                    in the form below:
+                </h1>
+                <Form
+                    {...layout}
+                    name="basic"
+                    initialValues={{ remember: true }}
+                    onFinish={onFinish}
+                    onFinishFailed={onFinishFailed}
+                    className={s.form}
+                >
+                    <Form.Item
+                        label="Username"
+                        name="username"
+                        rules={[{ required: true, message: 'Please input your username!' }]}
+                        className={s.textInput}
+                    >
+                        <Input />
+                    </Form.Item>
 
-            <Form.Item
-                label="Password"
-                name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
-            >
-                <Input.Password />
-            </Form.Item>
+                    <Form.Item
+                        label="Password"
+                        name="password"
+                        rules={[{ required: true, message: 'Please input your password!' }]}
+                        className={s.textInput}
+                    >
+                        <Input.Password />
+                    </Form.Item>
 
-            <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-                <Checkbox>Remember me</Checkbox>
-            </Form.Item>
+                    <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+                        <Checkbox>Remember me</Checkbox>
+                    </Form.Item>
 
-            <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-            </Form.Item>
-        </Form>
+                    <Form.Item {...tailLayout} className={s.submitButton}>
+                        <Button type="primary" htmlType="submit">
+                            Submit
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </div>
+        </div>
     );
 }
