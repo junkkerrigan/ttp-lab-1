@@ -4,31 +4,34 @@ import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
 import { ProjectModelsStore } from '../store';
 
 export interface IEvent extends IBaseModel {
-    name: string;
-    description: string;
+  name: string;
+  description: string;
 }
 
 export interface IEventConstructor extends IBaseModelConstructor {
-    new (): Event;
+  new (): Event;
 }
 
 export class Event extends BaseModel implements IEvent {
-    public name!: string;
-    public description!: string;
+  public name!: string;
+  public description!: string;
 
-    static associate(models: ProjectModelsStore) {
-        Event.belongsTo(models.Guild, { foreignKey: 'organizer' });
-    }
+  static associate(models: ProjectModelsStore) {
+    Event.belongsTo(models.Guild, { foreignKey: 'organizer' });
+  }
 }
 
-Event.initModel({
+Event.initModel(
+  {
     name: {
-        type: DataTypes.STRING,
+      type: DataTypes.STRING,
     },
     description: {
-        type: DataTypes.STRING,
-        allowNull: true
+      type: DataTypes.STRING,
+      allowNull: true,
     },
-}, {
+  },
+  {
     tableName: 'events',
-});
+  },
+);

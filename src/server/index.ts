@@ -7,17 +7,17 @@ import { RESET_DB } from './config';
 const port = process.env.SERVER_PORT || 8080;
 
 (async () => {
-    try {
-        await sequelize.sync({ force: RESET_DB });
-        await models.User.create({
-            username: 'junkkerrigan',
-            password: '726721gfd',
-            status: 'figured out'
-        });
-    } catch (e) {
-        console.log('error: ', e);
-    }
-    app.listen(port, () => {
-        console.log(`Server is running on ${port}.`);
+  try {
+    await sequelize.sync({ force: RESET_DB });
+    await models.User.create({
+      username: 'junkkerrigan',
+      password: '726721gfd',
+      status: 'figured out',
     });
+  } catch (e) {
+    console.log('error: ', e);
+  }
+  app.listen(port, () => {
+    console.log(`Server is running on ${port}.`);
+  });
 })();

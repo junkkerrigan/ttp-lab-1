@@ -1,12 +1,14 @@
 export interface UserCredentials {
-    username: string;
-    password: string;
+  username: string;
+  password: string;
 }
 
 export interface AuthenticationRequest extends UserCredentials {}
 
 export interface AuthenticationResponse {
-    success: boolean;
+  success: boolean;
+  data: {
     token?: string;
     message?: string;
+  };
 }
