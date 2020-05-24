@@ -7,13 +7,15 @@ import { guildsRouter } from './guilds';
 import { companiesRouter } from './companies';
 import { eventsRouter } from './events';
 
-const router = Router();
+const v1Router = Router();
 
-router.use('/users', usersRouter);
-router.use('/products', productsRouter);
-router.use('/open-source-projects', openSourceProjectsRouter);
-router.use('/guilds', guildsRouter);
-router.use('/companies', companiesRouter);
-router.use('/events', eventsRouter);
+v1Router.use('/users', usersRouter);
+v1Router.use('/products', productsRouter);
+v1Router.use('/open-source-projects', openSourceProjectsRouter);
+v1Router.use('/guilds', guildsRouter);
+v1Router.use('/companies', companiesRouter);
+v1Router.use('/events', eventsRouter);
+
+const router = Router().use('/v1', v1Router);
 
 export { router as apiRouter };

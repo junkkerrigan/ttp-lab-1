@@ -8,11 +8,12 @@ module.exports = {
     entry: {
         client: './src/client/index.tsx'
     },
-    devtool: 'source-map',
     output: {
         path: path.resolve(__dirname, './dist'),
-        filename: '[name].js'
+        filename: '[name].js',
+        publicPath: '/'
     },
+    devtool: 'source-map',
     module: {
         rules: [
             {
@@ -23,7 +24,10 @@ module.exports = {
                     {
                         loader: 'css-loader',
                         options: {
-                            modules: true,
+                            modules: {
+                                mode: 'local',
+                                localIdentName: '[path][name]__[local]--[hash:base64:5]',
+                            },
                         },
                     },
                     'sass-loader',
@@ -46,7 +50,10 @@ module.exports = {
                     {
                         loader: 'css-loader',
                         options: {
-                            modules: true,
+                            modules: {
+                                mode: 'local',
+                                localIdentName: '[path][name]__[local]--[hash:base64:5]',
+                            },
                         },
                     },
                 ],

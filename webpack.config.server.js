@@ -4,9 +4,12 @@ const NodemonPlugin = require('nodemon-webpack-plugin');
 
 module.exports = {
     target: 'node',
+    node: {
+        __dirname: false,
+    },
     mode: 'development',
     entry: {
-        server: [ './src/server/index.ts' ]
+        server: ['./src/server/index.ts']
     },
     devtool: 'source-map',
     output: {
@@ -28,5 +31,5 @@ module.exports = {
     plugins: [
         new NodemonPlugin(),
     ],
-    externals: [ nodeExternals() ],
+    externals: [nodeExternals()],
 };

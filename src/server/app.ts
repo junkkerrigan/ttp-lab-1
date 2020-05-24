@@ -16,10 +16,11 @@ app.use(async (req, res, next) => {
     next();
 });
 
-app.use('/api/v1', apiRouter);
+app.use('/api', apiRouter);
 
-app.get('/', (req, res) => {
-    res.status(200).sendFile('index.html');
+const notApi = /^(?!\/api)/;
+app.get(notApi, (req, res) => {
+    res.status(200).sendFile('index.html', { root: __dirname });
 });
 
 export { app };

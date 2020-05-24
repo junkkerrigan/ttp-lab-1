@@ -1,9 +1,10 @@
 import { Form, Input, Checkbox, Button } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import { ValidateErrorEntity } from 'rc-field-form/lib/interface';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import s from './Login.scss';
+import { Redirect } from 'react-router-dom';
 
 interface LoginFields {
     name: string;
@@ -22,7 +23,11 @@ const tailLayout = {
 };
 
 export const Login: FC = () => {
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     const onFinish = (values: Store) => {
+        setIsLoggedIn(true);
         console.log('Success:', values);
     };
 
@@ -54,7 +59,6 @@ export const Login: FC = () => {
                     >
                         <Input />
                     </Form.Item>
-
                     <Form.Item
                         label="Password"
                         name="password"
@@ -63,11 +67,9 @@ export const Login: FC = () => {
                     >
                         <Input.Password />
                     </Form.Item>
-
                     <Form.Item {...tailLayout} name="remember" valuePropName="checked">
                         <Checkbox>Remember me</Checkbox>
                     </Form.Item>
-
                     <Form.Item {...tailLayout} className={s.submitButton}>
                         <Button type="primary" htmlType="submit">
                             Submit
@@ -75,6 +77,7 @@ export const Login: FC = () => {
                     </Form.Item>
                 </Form>
             </div>
+            {isLoggedIn && <Redirect to='/' />}
         </div>
     );
 }

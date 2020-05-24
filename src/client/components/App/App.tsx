@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { Login } from '../Login';
+import { authService } from '../../authService';
 
 export const App: FC = () => {
     return (
         <Router>
-            <div>
-                <Route exact path='/' component={Login} />
-            </div>
+            {!authService.getToken() && <Redirect to='/login' />}
+            <Route exact path='/login' component={Login} />
         </Router>
     )
 }
