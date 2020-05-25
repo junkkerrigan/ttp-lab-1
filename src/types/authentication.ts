@@ -9,6 +9,6 @@ export interface AuthenticationResponse {
   success: boolean;
   data: {
     token?: string;
-    message?: string;
+    incorrectFields?: (keyof UserCredentials)[];
   };
 }

@@ -6,7 +6,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { Login } from '../Login';
-import { authService } from '../../AuthManager';
+import { authManager } from '../../AuthManager';
 import { Register } from '../Register';
 
 export const App: FC = () => {

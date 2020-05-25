@@ -1,11 +1,11 @@
 import { Store } from 'antd/lib/form/interface';
 import { ValidateErrorEntity } from 'rc-field-form/lib/interface';
 import React, { FC, useState } from 'react';
+import { NavLink, Redirect } from 'react-router-dom';
+
+import { RegisterForm } from '../RegisterForm';
 
 import s from './Register.scss';
-import { NavLink, Redirect } from 'react-router-dom';
-import { LoginForm } from '../LoginForm';
-import { RegisterForm } from '../RegisterForm';
 
 export const Register: FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -28,10 +28,7 @@ export const Register: FC = () => {
           <br />
           create an account:
         </h1>
-        <RegisterForm
-          onSubmitSuccess={handleFormSubmitSuccess}
-          onSubmitFail={handleFormSubmitFail}
-        />
+        <RegisterForm onSubmitSuccess={handleFormSubmitSuccess} />
         <p className={s.loginText}>
           ...or
           <NavLink to="/login"> log in </NavLink>

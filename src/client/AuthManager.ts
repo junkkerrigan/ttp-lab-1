@@ -36,26 +36,20 @@ class AuthManager {
   }
 
   async authenticate(credentials: UserCredentials) {
-    // const token = this.getToken();
-    // if (!token) {
-    //     throw new AuthError('Failed to authenticate: no valid token in cache storage found');
-    // }
+    const { data } = await this.axiosClient.post<AuthenticationResponse>(
+      this.authBaseUrl,
+      credentials,
+    );
 
-    const { data: responseData } = await this.axiosClient.get<
-      AuthenticationResponse
-    >(this.authBaseUrl);
-    const {
-      success,
-      data: { token, message },
-    } = responseData;
+    return data;
   }
 
-  getToken() {
-    return this.cacheStorage.getItem(this.tokenKey);
+  saveToken(token: string) {
+    return this.cacheStorage.setItem(this.tokenKey, token);
   }
 }
 
-export const authService = new AuthManager();
+export const authManager = new AuthManager();
 
 /*
 

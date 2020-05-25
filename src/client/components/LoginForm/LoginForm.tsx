@@ -1,13 +1,12 @@
 import { Form, Input, Checkbox, Button } from 'antd';
 import { Store } from 'antd/lib/form/interface';
-import { ValidateErrorEntity } from 'rc-field-form/lib/interface';
 import React, { FC, useState } from 'react';
 
 import s from './LoginForm.scss';
 
 interface LoginFormProps {
-  onSubmitSuccess(values: Store): void;
-  onSubmitFail(errorInfo: ValidateErrorEntity): void;
+  error?: string;
+  onSubmit(values: Store): void;
 }
 
 const layout = {
@@ -18,17 +17,13 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-export const LoginForm: FC<LoginFormProps> = ({
-  onSubmitSuccess,
-  onSubmitFail,
-}) => {
+export const LoginForm: FC<LoginFormProps> = ({ error, onSubmit }) => {
   return (
     <Form
       {...layout}
       name="login"
       initialValues={{ remember: true }}
-      onFinish={onSubmitSuccess}
-      onFinishFailed={onSubmitFail}
+      onFinish={onSubmit}
       className={s.form}
     >
       <Form.Item
@@ -47,6 +42,7 @@ export const LoginForm: FC<LoginFormProps> = ({
       >
         <Input.Password />
       </Form.Item>
+      {error}
       <Form.Item {...tailLayout} name="remember" valuePropName="checked">
         <Checkbox>Remember me</Checkbox>
       </Form.Item>

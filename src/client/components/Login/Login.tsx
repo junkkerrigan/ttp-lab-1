@@ -1,22 +1,36 @@
-import { Store } from 'antd/lib/form/interface';
-import { ValidateErrorEntity } from 'rc-field-form/lib/interface';
 import React, { FC, useState } from 'react';
+import { NavLink, Redirect } from 'react-router-dom';
+
+import { LoginForm } from '../LoginForm';
+import { authManager } from '../../AuthManager';
 
 import s from './Login.scss';
-import { NavLink, Redirect } from 'react-router-dom';
-import { LoginForm } from '../LoginForm';
+import { UserCredentials } from '../../../types/authentication';
 
 export const Login: FC = () => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleFormSubmitSuccess = (values: Store) => {
-    setIsLoggedIn(true);
-    console.log('Success:', values);
-  };
-
-  const handleFormSubmitFail = (errorInfo: ValidateErrorEntity) => {
-    console.log('Failed:', errorInfo);
+  const handleFormSubmitSuccess = async (credentials: UserCredentials) => {
+    try {
+      const {
+        success,
+        data: { incorrectFields, token },
+      } = await authManager.authenticate(credentials);
+      if (success) {
+        authManager.saveToken(token!);
+        setIsLoggedIn(true);
+      } else {
+        const message = incorrectFields!.includes('username')
+          ? 'Error: user with such username is not found'
+          : 'Error: wrong password';
+        setError(message);
+      }
+    } catch (e) {
+      setError(
+        'Something went wrong, try to refresh the page or check your internet connection',
+      );
+    }
   };
 
   return (
@@ -28,8 +42,8 @@ export const Login: FC = () => {
           in the form below:
         </h1>
         <LoginForm
-          onSubmitSuccess={handleFormSubmitSuccess}
-          onSubmitFail={handleFormSubmitFail}
+          onSubmit={handleFormSubmitSuccess}
+          {...(error && { error })}
         />
         <p className={s.createAccountText}>
           ...or
