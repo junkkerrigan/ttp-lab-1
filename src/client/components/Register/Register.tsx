@@ -2,11 +2,12 @@ import { Store } from 'antd/lib/form/interface';
 import { ValidateErrorEntity } from 'rc-field-form/lib/interface';
 import React, { FC, useState } from 'react';
 
-import s from './Login.scss';
+import s from './Register.scss';
 import { NavLink, Redirect } from 'react-router-dom';
 import { LoginForm } from '../LoginForm';
+import { RegisterForm } from '../RegisterForm';
 
-export const Login: FC = () => {
+export const Register: FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -23,18 +24,18 @@ export const Login: FC = () => {
     <div className={s.container}>
       <div className={s.formWrapper}>
         <h1 className={s.title}>
-          Please, provide your account credentials
+          Please, fill in the form below to
           <br />
-          in the form below:
+          create an account:
         </h1>
-        <LoginForm
+        <RegisterForm
           onSubmitSuccess={handleFormSubmitSuccess}
           onSubmitFail={handleFormSubmitFail}
         />
-        <p className={s.createAccountText}>
+        <p className={s.loginText}>
           ...or
-          <NavLink to="/register"> create an account </NavLink>
-          if you don't still have one.
+          <NavLink to="/login"> log in </NavLink>
+          if you already have one.
         </p>
       </div>
       {isLoggedIn && <Redirect to="/" />}

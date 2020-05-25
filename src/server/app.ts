@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-import { models } from '../models';
+import { models } from '../db';
 import { apiRouter } from './routes';
 
 const app = express();

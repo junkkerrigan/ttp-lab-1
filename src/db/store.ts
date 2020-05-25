@@ -1,14 +1,14 @@
-import { User, IUser, IUserConstructor } from './definitions/User';
-import { Guild, IGuild, IGuildConstructor } from './definitions/Guild';
+import { User, IUser, IUserConstructor } from './models/User';
+import { Guild, IGuild, IGuildConstructor } from './models/Guild';
 import {
   OpenSourceProject,
   IOpenSourceProject,
   IOpenSourceProjectConstructor,
-} from './definitions/OpenSourceProject';
-import { Device, IDevice, IDeviceConstructor } from './definitions/Device';
-import { Event, IEvent, IEventConstructor } from './definitions/Event';
-import { Product, IProduct, IProductConstructor } from './definitions/Product';
-import { Company, ICompany, ICompanyConstructor } from './definitions/Company';
+} from './models/OpenSourceProject';
+import { Device, IDevice, IDeviceConstructor } from './models/Device';
+import { Event, IEvent, IEventConstructor } from './models/Event';
+import { Product, IProduct, IProductConstructor } from './models/Product';
+import { Company, ICompany, ICompanyConstructor } from './models/Company';
 
 export interface ProjectModelsStore {
   User: IUser & IUserConstructor;

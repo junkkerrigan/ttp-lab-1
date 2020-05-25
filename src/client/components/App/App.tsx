@@ -7,12 +7,14 @@ import {
 } from 'react-router-dom';
 import { Login } from '../Login';
 import { authService } from '../../AuthManager';
+import { Register } from '../Register';
 
 export const App: FC = () => {
   return (
     <Router>
-      {!authService.getToken() && <Redirect to="/login" />}
+      {/* {!authService.getToken() && <Redirect to="/login" />}*/}
       <Route exact path="/login" component={Login} />
+      <Route exact path="/register" component={Register} />
     </Router>
   );
 };

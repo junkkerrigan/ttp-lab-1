@@ -1,7 +1,7 @@
 {
   "name": "ttp-lab-1",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "src/server/index.ts",
   "repository": "git@github.com:junkkerrigan/ttp-lab-1.git",
   "author": "Andrew Pavlenko <paavlenko.andrew@gmail.com>",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "build:server": "webpack --config webpack.config.server.js",
     "build:client": "webpack --config webpack.config.client.js",
     "build": "npm run build:server && npm run build:client",
-    "serve": "node ./dist/server.bundle.js",
+    "serve": "node ./dist/server.js",
     "start": "npm run build && npm run serve && npm run open",
     "lint": "eslint ./src/* --no-error-on-unmatched-pattern",
     "lint:fix": "eslint ./src/* --fix --no-error-on-unmatched-pattern"
