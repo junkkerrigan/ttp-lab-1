@@ -1,0 +1,1 @@
+export { HomeResourcesList } from './HomeResourcesList';

@@ -1,0 +1,33 @@
+.card {
+  min-height: 250px;
+}
+
+.title {
+  font-size: 17px;
+}
+
+.textTitle {
+  margin-bottom: 0;
+}
+
+.textTitleLink {
+  display: flex;
+  align-items: center;
+  color: black;
+  padding-bottom: 5px;
+  border-bottom: 1px solid black;
+  transition: .3s;
+  font-size: 25px;
+  margin-left: 10px;
+
+  &:hover {
+    color: black;
+    font-size: 26px;
+    border-bottom-color: transparent;
+  }
+}
+
+.text {
+  margin: 7px 0 0 26px;
+  font-size: 21px;
+}

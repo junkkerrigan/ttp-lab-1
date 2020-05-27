@@ -5,8 +5,8 @@ import React, { FC, useState } from 'react';
 import s from './RegisterForm.scss';
 
 interface RegisterFormProps {
-  error: string | null;
-  onSubmit?(values: Store): void;
+  error?: string | null;
+  onSubmit(values: Store): void;
 }
 
 const layout = {

@@ -1,11 +1,12 @@
-import React, { FC, useState } from 'react';
+import React, { CSSProperties, FC, useState } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
 
-import { LoginForm } from '../LoginForm';
+import { UserCredentials } from '../../../types/authentication';
 import { authManager } from '../../AuthManager';
+import { LoginForm } from '../LoginForm';
+import { Page } from '../Page';
 
 import s from './Login.scss';
-import { UserCredentials } from '../../../types/authentication';
 
 export const Login: FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +35,7 @@ export const Login: FC = () => {
   };
 
   return (
-    <div className={s.container}>
+    <Page>
       <div className={s.formWrapper}>
         <h1 className={s.title}>
           Please, provide your account credentials
@@ -52,6 +53,6 @@ export const Login: FC = () => {
         </p>
       </div>
       {isLoggedIn && <Redirect to="/" />}
-    </div>
+    </Page>
   );
 };
