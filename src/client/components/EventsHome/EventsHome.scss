@@ -1,0 +1,22 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.noEventsMessage {
+  text-align: center;
+  font-size: 35px;
+}
+
+.noEventsSubMessage {
+  display: block;
+  font-size: 23px;
+  color: $blueColor;
+}
+
+.addEventLink {
+  font-size: 40px;
+  cursor: pointer;
+  color: $blackColor;
+  position: absolute;
+  right: 50px;
+  top: 30px;
+}

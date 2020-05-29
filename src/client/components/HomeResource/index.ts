@@ -1,1 +1,0 @@
-export { HomeResource } from './HomeResource';

@@ -4,29 +4,30 @@ import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
 import { Maintenance } from './Maintenance';
 import { Contribution } from './Contribution';
 import { ProjectModelsStore } from '../store';
+import { OpenSourceProject } from '../../types/domain';
 
-export interface IOpenSourceProject extends IBaseModel {
-  name: string;
-  description: string;
-  stars: number;
+export interface IOpenSourceProjectModel
+  extends IBaseModel,
+    OpenSourceProject {}
+
+export interface IOpenSourceProjectModelConstructor
+  extends IBaseModelConstructor {
+  new (): OpenSourceProjectModel;
 }
 
-export interface IOpenSourceProjectConstructor extends IBaseModelConstructor {
-  new (): OpenSourceProject;
-}
-
-export class OpenSourceProject extends BaseModel implements IOpenSourceProject {
+export class OpenSourceProjectModel extends BaseModel
+  implements IOpenSourceProjectModel {
   public name!: string;
-  public description!: string;
+  public description?: string;
   public stars!: number;
 
   static associate(models: ProjectModelsStore) {
-    OpenSourceProject.belongsToMany(models.User, {
+    OpenSourceProjectModel.belongsToMany(models.User, {
       through: Maintenance,
       foreignKey: 'projectId',
       otherKey: 'maintainerId',
     });
-    OpenSourceProject.belongsToMany(models.User, {
+    OpenSourceProjectModel.belongsToMany(models.User, {
       through: Contribution,
       foreignKey: 'projectId',
       otherKey: 'contributorId',
@@ -34,7 +35,7 @@ export class OpenSourceProject extends BaseModel implements IOpenSourceProject {
   }
 }
 
-OpenSourceProject.initModel(
+OpenSourceProjectModel.initModel(
   {
     name: {
       type: DataTypes.STRING,
@@ -47,7 +48,6 @@ OpenSourceProject.initModel(
     },
     stars: {
       type: DataTypes.INTEGER,
-      allowNull: true,
       defaultValue: 0,
     },
   },

@@ -17,7 +17,7 @@ export const Register: FC = () => {
   };
 
   return (
-    <Page>
+    <Page centerContent>
       <div className={s.formWrapper}>
         <h1 className={s.title}>
           Please, fill in the form below to

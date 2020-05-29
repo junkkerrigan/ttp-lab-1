@@ -35,7 +35,7 @@ export const Login: FC = () => {
   };
 
   return (
-    <Page>
+    <Page centerContent>
       <div className={s.formWrapper}>
         <h1 className={s.title}>
           Please, provide your account credentials

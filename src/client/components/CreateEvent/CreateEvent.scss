@@ -1,0 +1,50 @@
+@import "../../styles/variables.scss";
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 130px;
+}
+
+.title {
+  font-size: 50px;
+  margin-bottom: 60px;
+}
+
+.form {
+  position: relative;
+  width: 600px;
+  border: 1px solid $blueColor;
+  padding: 40px 0 0!important;
+}
+
+.input {
+  margin-bottom: 10px!important;
+}
+
+.submitButton {
+  margin-bottom: 0!important;
+}
+
+.textArea {
+  height: 100px!important;
+}
+
+.fakeMessageContainer {
+  height: 31px;
+  margin-top: 20px!important;
+}
+
+.successMessage {
+  font-size: 20px;
+  margin-top: 20px;
+  color: $greenColor;
+}
+
+.errorMessage {
+  font-size: 20px;
+  margin-top: 20px;
+  color: $redColor;
+}

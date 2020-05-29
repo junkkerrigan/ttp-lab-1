@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { List } from 'antd';
-import { HomeResource, HomeResourceProps } from '../HomeResource/HomeResource';
+import { HomeCard, HomeCardProps } from '../HomeCard/HomeCard';
 
-const resourcesDataList: HomeResourceProps[] = [
+const cardsDataList: HomeCardProps[] = [
   {
     title: 'Events',
     text: 'Check your coming and recent events out!',
-    titleLink: '',
+    titleLink: '/events',
   },
   {
     title: 'Guilds',
@@ -30,18 +30,18 @@ const resourcesDataList: HomeResourceProps[] = [
   },
 ];
 
-export const HomeResourcesList: FC = () => {
+export const HomeCardsList: FC = () => {
   return (
     <List
       grid={{
         gutter: 20,
         column: 3,
       }}
-      dataSource={resourcesDataList}
+      dataSource={cardsDataList}
       renderItem={(resourceData) => {
         return (
           <List.Item>
-            <HomeResource {...resourceData} />
+            <HomeCard {...resourceData} />
           </List.Item>
         );
       }}

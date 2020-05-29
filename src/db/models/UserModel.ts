@@ -4,21 +4,18 @@ import { Maintenance } from './Maintenance';
 import { Contribution } from './Contribution';
 import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
 import { ProjectModelsStore } from '../store';
+import { User } from '../../types/domain';
 
-export interface IUser extends IBaseModel {
-  username: string;
-  password: string;
-  status: string;
+export interface IUserModel extends IBaseModel, User {}
+
+export interface IUserModelConstructor extends IBaseModelConstructor {
+  new (): UserModel;
 }
 
-export interface IUserConstructor extends IBaseModelConstructor {
-  new (): User;
-}
-
-export class User extends BaseModel implements IUser {
+export class UserModel extends BaseModel implements IUserModel {
   public username!: string;
   public password!: string;
-  public status!: string;
+  public status?: string;
 
   static associate(models: ProjectModelsStore) {
     this.hasMany(models.Device, { foreignKey: 'user' });
@@ -37,7 +34,7 @@ export class User extends BaseModel implements IUser {
   }
 }
 
-User.initModel(
+UserModel.initModel(
   {
     username: {
       type: DataTypes.STRING,

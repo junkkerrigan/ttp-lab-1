@@ -2,27 +2,25 @@ import { DataTypes } from 'sequelize';
 
 import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
 import { ProjectModelsStore } from '../store';
+import { Guild } from '../../types/domain';
 
-export interface IGuild extends IBaseModel {
-  name: string;
-  description: string;
+export interface IGuildModel extends IBaseModel, Guild {}
+
+export interface IGuildModelConstructor extends IBaseModelConstructor {
+  new (): GuildModel;
 }
 
-export interface IGuildConstructor extends IBaseModelConstructor {
-  new (): Guild;
-}
-
-export class Guild extends BaseModel implements IGuild {
+export class GuildModel extends BaseModel implements IGuildModel {
   public name!: string;
-  public description!: string;
+  public description?: string;
 
   static associate(models: ProjectModelsStore) {
-    Guild.hasMany(models.Event, { foreignKey: 'guild' });
-    Guild.hasMany(models.User, { foreignKey: 'guild' });
+    GuildModel.hasMany(models.Event, { foreignKey: 'guild' });
+    GuildModel.hasMany(models.User, { foreignKey: 'guild' });
   }
 }
 
-Guild.initModel(
+GuildModel.initModel(
   {
     name: {
       type: DataTypes.STRING,

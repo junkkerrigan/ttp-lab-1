@@ -3,19 +3,15 @@ import React, { FC } from 'react';
 import { Card } from 'antd';
 import { NavLink } from 'react-router-dom';
 
-import s from './HomeResource.scss';
+import s from './HomeCard.scss';
 
-export interface HomeResourceProps {
+export interface HomeCardProps {
   title: string;
   titleLink: string;
   text: string;
 }
 
-export const HomeResource: FC<HomeResourceProps> = ({
-  title,
-  titleLink,
-  text,
-}) => {
+export const HomeCard: FC<HomeCardProps> = ({ title, titleLink, text }) => {
   const [firstWord, ...restOfWords] = text.split(' ');
   const restOfText = restOfWords.join(' ');
 

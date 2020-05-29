@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 .card {
   min-height: 250px;
 }
@@ -13,7 +15,7 @@
 .textTitleLink {
   display: flex;
   align-items: center;
-  color: black;
+  color: $blackColor;
   padding-bottom: 5px;
   border-bottom: 1px solid black;
   transition: .3s;
@@ -21,7 +23,7 @@
   margin-left: 10px;
 
   &:hover {
-    color: black;
+    color: $blackColor;
     font-size: 26px;
     border-bottom-color: transparent;
   }

@@ -3,10 +3,11 @@ import React, { CSSProperties, FC } from 'react';
 import { Page } from '../Page';
 
 import s from './Home.scss';
-import { HomeResourcesList } from '../HomeResourcesList';
+import { HomeCardsList } from '../HomeCardsList';
 
 const pageStyles: CSSProperties = {
   justifyContent: 'flex-start',
+  alignItems: 'center',
   padding: '30px 200px 0',
 };
 
@@ -19,7 +20,7 @@ export const Home: FC = () => {
         <br />
         Here is the start point of your journey through our site.
       </p>
-      <HomeResourcesList />
+      <HomeCardsList />
     </Page>
   );
 };

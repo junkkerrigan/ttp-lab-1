@@ -1,0 +1,1 @@
+export { CategoryHomeLayout } from './CategoryHomeLayout';
