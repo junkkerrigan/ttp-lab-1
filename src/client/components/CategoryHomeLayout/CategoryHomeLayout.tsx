@@ -4,7 +4,7 @@ import { Page } from '../Page';
 import s from './CategoryHomeLayout.scss';
 
 interface CategoryHomeLayoutProps {
-  title?: string;
+  title?: ReactNode;
   [key: string]: any;
 }
 

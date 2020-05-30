@@ -46,15 +46,14 @@ export interface ProjectModelsStore {
 }
 
 export const models: ProjectModelsStore = {
-  User: (UserModel as unknown) as IUserModel & IUserModelConstructor,
-  Guild: (GuildModel as unknown) as IGuildModel & IGuildModelConstructor,
-  OpenSourceProject: (OpenSourceProjectModel as unknown) as IOpenSourceProjectModel &
+  User: UserModel as IUserModel & IUserModelConstructor,
+  Guild: GuildModel as IGuildModel & IGuildModelConstructor,
+  OpenSourceProject: OpenSourceProjectModel as IOpenSourceProjectModel &
     IOpenSourceProjectModelConstructor,
-  Device: (DeviceModel as unknown) as IDeviceModel & IDeviceModelConstructor,
-  Event: (EventModel as unknown) as IEventModel & IEventConstructor,
-  Product: (ProductModel as unknown) as IProductModel & IProductConstructor,
-  Company: (CompanyModel as unknown) as ICompanyModel &
-    ICompanyModelConstructor,
+  Device: DeviceModel as IDeviceModel & IDeviceModelConstructor,
+  Event: EventModel as IEventModel & IEventConstructor,
+  Product: ProductModel as IProductModel & IProductConstructor,
+  Company: CompanyModel as ICompanyModel & ICompanyModelConstructor,
 };
 
 (Object.keys(models) as (keyof ProjectModelsStore)[]).forEach((modelName) => {

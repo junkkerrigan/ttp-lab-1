@@ -1,8 +1,9 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Op } from 'sequelize';
 
 import { Event } from '../../types/domain';
 import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
-import { ProjectModelsStore } from '../store';
+import { models } from '../store';
+import { GuildModel } from './GuildModel';
 
 export interface IEventModel extends IBaseModel, Event {}
 
@@ -11,15 +12,13 @@ export interface IEventConstructor extends IBaseModelConstructor {
 }
 
 export class EventModel extends BaseModel implements IEventModel {
-  public name!: string;
-  public description?: string;
-
-  static associate(models: ProjectModelsStore) {
-    EventModel.belongsTo(models.Guild, { foreignKey: 'organizer' });
-  }
+  name!: string;
+  description?: string;
+  interestedGuilds!: number[];
+  interestedGuildNames!: string[];
 }
 
-EventModel.initModel(
+EventModel.initModel<EventModel>(
   {
     name: {
       type: DataTypes.STRING,
@@ -40,8 +39,28 @@ EventModel.initModel(
         },
       },
     },
+    interestedGuilds: {
+      type: DataTypes.ARRAY(DataTypes.BIGINT),
+      defaultValue: [],
+    },
+    interestedGuildNames: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      defaultValue: [],
+    },
   },
   {
+    hooks: {
+      beforeCreate: async (event) => {
+        const guilds = await models.Guild.findAll<GuildModel>({
+          where: {
+            id: {
+              [Op.in]: event.interestedGuilds,
+            },
+          },
+        });
+        event.interestedGuildNames = guilds.map((guild) => guild.name);
+      },
+    },
     tableName: 'events',
   },
 );

@@ -1,10 +1,9 @@
-import React, { FC, useState } from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
-import { Event } from '../../../types/domain';
+import React, { FC, useEffect, useState } from 'react';
+import { Button, Form, Input, Select } from 'antd';
+import { Event, Guild } from '../../../types/domain';
 
 import s from './CreateEvent.scss';
 import { axiosClient } from '../../axiosClient';
-import classNames from 'classnames';
 
 const layout = {
   labelCol: { offset: 2, span: 4 },
@@ -14,10 +13,19 @@ const tailLayout = {
   wrapperCol: { offset: 6, span: 16 },
 };
 
+type GuildData = Pick<Guild, 'name'> & { id: number };
+
 export const CreateEvent: FC = () => {
+  const [guilds, setGuilds] = useState<GuildData[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    axiosClient
+      .get<GuildData[]>('/guilds?fields=id&fields=name')
+      .then(({ data }) => setGuilds(data));
+  }, []);
 
   const handleSubmit = async (eventData: Event) => {
     try {
@@ -64,6 +72,20 @@ export const CreateEvent: FC = () => {
         </Form.Item>
         <Form.Item label="Description" name="description">
           <Input.TextArea className={s.textArea} />
+        </Form.Item>
+        <Form.Item label="Interested guilds" name="interestedGuilds">
+          <Select
+            mode="multiple"
+            placeholder="Please, select guilds that may be interested in your event"
+          >
+            {guilds.map(({ id, name }) => {
+              return (
+                <Select.Option key={name} value={id}>
+                  {name}
+                </Select.Option>
+              );
+            })}
+          </Select>
         </Form.Item>
         <Form.Item {...tailLayout} className={s.submitButton}>
           <Button type="primary" htmlType="submit">

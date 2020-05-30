@@ -7,6 +7,8 @@ export interface User {
 export interface Event {
   name: string;
   description?: string;
+  interestedGuilds: number[];
+  interestedGuildNames: string[];
 }
 
 export interface Product {
@@ -29,6 +31,7 @@ export interface OpenSourceProject {
 export interface Guild {
   name: string;
   description?: string;
+  interestingEvents: number[];
 }
 
 export interface Device {

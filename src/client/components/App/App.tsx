@@ -1,5 +1,10 @@
 import React, { CSSProperties, FC } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  NavLink,
+  Route,
+  Switch,
+} from 'react-router-dom';
 
 import { Home } from '../Home';
 import { Login } from '../Login';
@@ -7,6 +12,7 @@ import { Register } from '../Register';
 import { EventsHome } from '../EventsHome/EventsHome';
 import { CategoryHomeLayout } from '../CategoryHomeLayout';
 import { CreateEvent } from '../CreateEvent';
+import { CategoryHomeHeaderLink } from '../CategoryHomeHeaderLink';
 
 const CategoryRoute: FC<{
   path: string;
@@ -22,10 +28,6 @@ const CategoryRoute: FC<{
   );
 };
 
-const eventsContainerStyles: CSSProperties = {
-  alignItems: 'flex-start',
-};
-
 export const App: FC = () => {
   return (
     <Router>
@@ -33,7 +35,11 @@ export const App: FC = () => {
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/" component={Home} />
-        <CategoryRoute path="/events" centerContent title="Your events">
+        <CategoryRoute
+          path="/events"
+          centerContent
+          title={<CategoryHomeHeaderLink text="Your events" link="/events" />}
+        >
           <Route exact path="/events" component={EventsHome} />
           <Route exact path="/events/create" component={CreateEvent} />
         </CategoryRoute>

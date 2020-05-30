@@ -1,0 +1,24 @@
+@import "../../styles/variables";
+
+.card {
+  min-height: 200px;
+}
+
+.sectionTitle {
+  color: $blueColor;
+  font-size: 18px!important;
+  margin: 13px 0 7px;
+}
+
+.sectionTitle:first-of-type {
+  margin-top: 0;
+}
+
+.description {
+  font-size: 16px!important;
+  margin-bottom: 0!important;
+}
+
+.guildTag {
+  margin-bottom: 5px!important;
+}

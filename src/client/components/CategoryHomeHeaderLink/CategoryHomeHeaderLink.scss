@@ -1,0 +1,9 @@
+@import "../../styles/variables";
+
+.link {
+  color: $whiteColor;
+
+  &:hover {
+    color: $whiteColor;
+  }
+}

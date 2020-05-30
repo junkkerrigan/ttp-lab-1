@@ -1,0 +1,1 @@
+export { CategoryHomeHeaderLink } from './CategoryHomeHeaderLink';

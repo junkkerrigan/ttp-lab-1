@@ -26,7 +26,10 @@ export abstract class BaseModel extends Model implements IBaseModel {
   readonly registrationDate!: Date;
   updatedAt!: Date;
 
-  static initModel(attributes: ModelAttributes, options: Partial<InitOptions>) {
+  static initModel<M extends BaseModel = BaseModel>(
+    attributes: ModelAttributes,
+    options: Partial<InitOptions<M>>,
+  ) {
     if (PREFER_RESTRICT_NULL) {
       attributes = Object.entries(attributes).reduce<ModelAttributes>(
         (acc, [key, value]) => {
@@ -42,10 +45,10 @@ export abstract class BaseModel extends Model implements IBaseModel {
         {},
       );
     }
-    super.init.call((this as unknown) as ModelCtor<BaseModel>, attributes, {
+    super.init.call(this as any, attributes, {
       sequelize,
       createdAt: 'registrationDate',
       ...options,
-    });
+    } as any);
   }
 }

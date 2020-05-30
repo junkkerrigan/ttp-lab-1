@@ -1,9 +1,10 @@
 import { Router } from 'express';
+import { EventModel } from '../../db/models/EventModel';
 
 const router = Router();
 
 router.get('/', async (req, res) => {
-  res.status(200).send(await req.context.models.Event.findAll());
+  res.status(200).send(await req.context.models.Event.findAll<EventModel>());
 });
 
 router.post('/', async (req, res) => {
