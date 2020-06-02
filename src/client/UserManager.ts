@@ -10,8 +10,8 @@ interface CacheStorage {
   removeItem(key: string): void;
 }
 
-interface AuthManagerInitialOptions {
-  axiosInstance?: AxiosClient;
+interface UserManagerInitialOptions {
+  axiosClientInstance?: AxiosClient;
   cacheStorage?: CacheStorage;
 }
 
@@ -21,21 +21,24 @@ export class AuthError extends Error {
   }
 }
 
-export class AuthManager {
+export class UserManager {
   private readonly tokenKey = 'authToken';
-  private readonly authBaseUrl = '/_auth';
   private readonly axiosClient: AxiosClient;
-  private readonly cacheStorage: CacheStorage;
+  private cacheStorage: CacheStorage;
 
-  constructor(overrideOptions?: AuthManagerInitialOptions) {
-    const { cacheStorage, axiosInstance }: AuthManagerInitialOptions = {
-      axiosInstance: axiosClient,
+  constructor(overrideOptions?: UserManagerInitialOptions) {
+    const { cacheStorage, axiosClientInstance }: UserManagerInitialOptions = {
+      axiosClientInstance: axiosClient,
       cacheStorage: localStorage,
       ...overrideOptions,
     };
 
-    this.axiosClient = axiosInstance;
+    this.axiosClient = axiosClientInstance;
     this.cacheStorage = cacheStorage;
+  }
+
+  get isUserAuthenticated() {
+    return this.cacheStorage.getItem(this.tokenKey) !== null;
   }
 
   async authenticate(credentials: UserCredentials) {
@@ -57,17 +60,19 @@ export class AuthManager {
       throw new AuthError();
     }
 
-    this.axiosClient.updateDefaults({
-      headers: {
-        Authorization: token,
-      },
-    });
-    this.saveToken(token!);
+    this.axiosClient.updateAuthHeader(token);
+    this.token = token!;
   }
 
-  saveToken(token: string) {
-    return this.cacheStorage.setItem(this.tokenKey, token);
+  get token() {
+    return this.cacheStorage.getItem(this.tokenKey);
+  }
+
+  set token(token: any) {
+    if (token) {
+      this.cacheStorage.setItem(this.tokenKey, String(token));
+    }
   }
 }
 
-export const authManager = new AuthManager();
+export const userManager = new UserManager();

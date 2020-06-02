@@ -57,7 +57,9 @@ router.post<any, AuthenticationResponse, AuthenticationRequest>(
         });
       }
 
-      const token = jwt.sign({ username }, req.context.jwtSecret);
+      const token = jwt.sign({ username }, req.context.jwtSecret, {
+        expiresIn: 60 * 60 * 24,
+      });
       return res.status(200).send({
         success: true,
         data: {

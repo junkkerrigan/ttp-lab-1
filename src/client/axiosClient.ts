@@ -1,5 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { API_BASE_URL, AUTH_BASE_URL } from './constants';
+import {
+  API_BASE_URL,
+  AUTH_BASE_URL,
+  AUTHORIZATION_HEADER_NAME,
+} from './constants';
 
 type AxiosClientInstanceNames = 'api' | 'auth' | 'default';
 
@@ -12,6 +16,7 @@ export interface AxiosClient extends AxiosInstance {
     overrideDefaults: AxiosRequestConfig,
     forInstances?: Record<Partial<AxiosClientInstanceNames>, boolean>,
   ): void;
+  updateAuthHeader(name?: string): void;
 }
 
 export const createAxiosClient = (
@@ -35,27 +40,37 @@ export const createAxiosClient = (
     default: defaultInstance,
   };
 
+  const iterateThroughInstances = (
+    instanceNames: AxiosClientInstanceNames[],
+  ) => (functionToApply: (instance: AxiosInstance) => any) => {
+    instanceNames.forEach((name) => {
+      functionToApply(instances[name]);
+    });
+  };
+
   defaultInstance.updateDefaults = (
-    overrideDefaults: AxiosRequestConfig,
+    defaultsUpdatingFn: (currentDefaults: AxiosRequestConfig) => void,
     forInstances?: Record<Partial<AxiosClientInstanceNames>, boolean>,
   ) => {
-    if (!forInstances) {
-      (Object.values(instances) as AxiosInstance[]).forEach((instance) => {
-        instance.defaults = {
-          ...instance.defaults,
-          ...overrideDefaults,
-        };
-      });
-    } else {
-      (Object.keys(forInstances) as AxiosClientInstanceNames[]).forEach(
-        (instanceName) => {
-          instances[instanceName].defaults = {
-            ...instances[instanceName].defaults,
-            ...overrideDefaults,
-          };
-        },
-      );
+    let instanceNames = Object.keys(instances);
+    if (forInstances) {
+      instanceNames = Object.keys(forInstances);
     }
+
+    iterateThroughInstances(instanceNames as AxiosClientInstanceNames[])(
+      (instance) => {
+        defaultsUpdatingFn(instance.defaults);
+      },
+    );
+  };
+
+  defaultInstance.updateAuthHeader = (
+    value: string,
+    name: string = AUTHORIZATION_HEADER_NAME,
+  ) => {
+    defaultInstance.updateDefaults((currentDefaults: AxiosRequestConfig) => {
+      currentDefaults.headers.common[name] = value;
+    });
   };
 
   return defaultInstance;

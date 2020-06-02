@@ -26,9 +26,11 @@ export const EventsHome: FC = () => {
     ];
     const query = fields.map((field) => `fields=${field}`).join('&');
 
-    axiosClient.api.get<EventData[]>(`/events?${query}`).then(({ data }) => {
-      setEvents(data);
-    });
+    axiosClient.api
+      .get<EventData[]>(`/events?${query}`)
+      .then(({ data, config }) => {
+        setEvents(data);
+      });
   }, []);
 
   return (

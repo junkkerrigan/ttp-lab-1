@@ -2,7 +2,7 @@ import React, { CSSProperties, FC, useState } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
 
 import { UserCredentials } from '../../../types/authentication';
-import { AuthError, authManager } from '../../AuthManager';
+import { AuthError, userManager } from '../../UserManager';
 import { LoginForm } from '../LoginForm';
 import { Page } from '../Page';
 
@@ -14,7 +14,7 @@ export const Login: FC = () => {
 
   const handleFormSubmitSuccess = async (credentials: UserCredentials) => {
     try {
-      await authManager.authenticate(credentials);
+      await userManager.authenticate(credentials);
       setIsLoggedIn(true);
     } catch (e) {
       if (e instanceof AuthError) {

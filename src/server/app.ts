@@ -22,7 +22,18 @@ app.use(async (req, res, next) => {
 app.use('/_auth', authRouter);
 app.use(
   '/_api',
-  (...args) => jwtAuth({ secret: args[0].context.jwtSecret })(...args),
+  (req, _, next) => {
+    console.log(req.headers);
+    return next();
+  },
+  (...args) =>
+    jwtAuth({
+      secret: args[0].context.jwtSecret,
+      getToken: (req) => {
+        console.log(req.headers);
+        return req.headers.token;
+      },
+    })(...args),
   apiRouter,
 );
 
