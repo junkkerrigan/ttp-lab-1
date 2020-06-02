@@ -2,7 +2,7 @@ import React, { CSSProperties, FC, useState } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
 
 import { UserCredentials } from '../../../types/authentication';
-import { authManager } from '../../AuthManager';
+import { AuthError, authManager } from '../../AuthManager';
 import { LoginForm } from '../LoginForm';
 import { Page } from '../Page';
 
@@ -14,20 +14,22 @@ export const Login: FC = () => {
 
   const handleFormSubmitSuccess = async (credentials: UserCredentials) => {
     try {
-      const {
-        success,
-        data: { incorrectFields, token },
-      } = await authManager.authenticate(credentials);
-      if (success) {
-        authManager.saveToken(token!);
-        setIsLoggedIn(true);
-      } else {
-        const message = incorrectFields!.includes('username')
-          ? 'Error: user with such username is not found'
-          : 'Error: wrong password';
-        setError(message);
-      }
+      await authManager.authenticate(credentials);
+      setIsLoggedIn(true);
     } catch (e) {
+      if (e instanceof AuthError) {
+        const { incorrectField } = e;
+
+        if (incorrectField) {
+          const message =
+            incorrectField === 'username'
+              ? 'Error: no such username'
+              : 'Error: wrong password';
+          setError(message);
+          return;
+        }
+      }
+
       setError(
         'Something went wrong, try to refresh the page or check your internet connection',
       );

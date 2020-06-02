@@ -13,6 +13,7 @@ import { EventsHome } from '../EventsHome/EventsHome';
 import { CategoryHomeLayout } from '../CategoryHomeLayout';
 import { CreateEvent } from '../CreateEvent';
 import { CategoryHomeHeaderLink } from '../CategoryHomeHeaderLink';
+import { GuildsHome } from '../GuildsHome';
 
 const CategoryRoute: FC<{
   path: string;
@@ -42,6 +43,13 @@ export const App: FC = () => {
         >
           <Route exact path="/events" component={EventsHome} />
           <Route exact path="/events/create" component={CreateEvent} />
+        </CategoryRoute>
+        <CategoryRoute
+          path="/guild"
+          centerContent
+          title={<CategoryHomeHeaderLink text="Your guild" link="/guild" />}
+        >
+          <Route exact path="/guild" component={GuildsHome} />
         </CategoryRoute>
       </Switch>
     </Router>

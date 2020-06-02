@@ -5,7 +5,7 @@ import { Card, List, Tag } from 'antd';
 import s from './EventCard.scss';
 import { EventData } from '../EventsHome';
 
-interface EventCardProps extends EventData {}
+interface EventCardProps extends Partial<EventData> {}
 
 const MAX_DESCRIPTION_TEXT_LENGTH = 150;
 
@@ -18,6 +18,7 @@ export const EventCard: FC<EventCardProps> = ({
   if ((description?.length || 0) > MAX_DESCRIPTION_TEXT_LENGTH) {
     descriptionText += '...';
   }
+
   return (
     <Card title={name} className={s.card}>
       {description && (
@@ -26,7 +27,7 @@ export const EventCard: FC<EventCardProps> = ({
           <p className={s.description}>{descriptionText}</p>
         </>
       )}
-      {interestedGuildNames.length !== 0 && (
+      {interestedGuildNames && interestedGuildNames.length !== 0 && (
         <>
           <p className={s.sectionTitle}>Interesting for guilds:</p>
           {interestedGuildNames.map((guildName) => {

@@ -10,7 +10,7 @@ const cardsDataList: HomeCardProps[] = [
   },
   {
     title: 'Guilds',
-    text: "Check what's new in your guilds!",
+    text: "Check what's new in your guild!",
     titleLink: '',
   },
   {

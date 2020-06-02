@@ -22,14 +22,14 @@ export const CreateEvent: FC = () => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    axiosClient
+    axiosClient.api
       .get<GuildData[]>('/guilds?fields=id&fields=name')
       .then(({ data }) => setGuilds(data));
   }, []);
 
   const handleSubmit = async (eventData: Event) => {
     try {
-      await axiosClient.post('/events', eventData);
+      await axiosClient.api.post('/events', eventData);
 
       form.resetFields(['name', 'description']);
 

@@ -1,3 +1,4 @@
+import { RightOutlined } from '@ant-design/icons';
 import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
@@ -13,8 +14,14 @@ export const CategoryHomeHeaderLink: FC<CategoryHomeHeaderLinkProps> = ({
   link,
 }) => {
   return (
-    <NavLink to={link} className={s.link}>
-      {text}
-    </NavLink>
+    <div className={s.container}>
+      <NavLink to="/" className={s.homeLink}>
+        Home
+      </NavLink>
+      <RightOutlined className={s.angleIcon} />
+      <NavLink to={link} className={s.categoryLink}>
+        {text}
+      </NavLink>
+    </div>
   );
 };

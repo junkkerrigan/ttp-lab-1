@@ -1,6 +1,7 @@
 import { Layout } from 'antd';
-import React, { CSSProperties, FC, ReactNode } from 'react';
 import classnames from 'classnames';
+import React, { CSSProperties, FC, ReactNode } from 'react';
+
 import s from './Page.scss';
 
 interface PageProps {

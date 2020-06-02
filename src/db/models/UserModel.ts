@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import bcrypt from 'bcrypt';
 
 import { Maintenance } from './Maintenance';
 import { Contribution } from './Contribution';
@@ -34,7 +35,7 @@ export class UserModel extends BaseModel implements IUserModel {
   }
 }
 
-UserModel.initModel(
+UserModel.initModel<UserModel>(
   {
     username: {
       type: DataTypes.STRING,
@@ -49,6 +50,13 @@ UserModel.initModel(
     },
   },
   {
+    hooks: {
+      beforeCreate: async (user) => {
+        const rounds = Number(process.env.BCRYPT_SALT_ROUNDS) || 10;
+        const salt = await bcrypt.genSalt(rounds);
+        user.password = await bcrypt.hash(user.password, salt);
+      },
+    },
     tableName: 'users',
   },
 );

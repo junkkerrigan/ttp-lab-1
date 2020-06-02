@@ -7,7 +7,7 @@ export interface AuthenticationRequest extends UserCredentials {}
 
 export interface AuthenticationResponse {
   success: boolean;
-  data: {
+  data?: {
     token?: string;
     incorrectFields?: (keyof UserCredentials)[];
   };

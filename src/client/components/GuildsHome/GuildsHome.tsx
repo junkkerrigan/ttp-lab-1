@@ -1,41 +1,30 @@
-import React, { CSSProperties, FC, useEffect, useState } from 'react';
-import { CategoryHomeLayout } from '../CategoryHomeLayout';
-import { Event, Guild } from '../../../types/domain';
 import { PlusCircleOutlined } from '@ant-design/icons';
-
 import { List } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
+
+import { Guild } from '../../../types/domain';
 import { axiosClient } from '../../axiosClient';
-
-import s from './EventsHome.scss';
 import { EventCard } from '../EventCard';
-import { NavLink } from 'react-router-dom';
 
-export type EventData = Pick<
-  Event,
-  'name' | 'description' | 'interestedGuildNames'
->;
+import s from './GuildsHome.scss';
 
-export const EventsHome: FC = () => {
-  const [events, setEvents] = useState<EventData[]>([]);
+export type GuildData = Pick<Guild, 'name' | 'interestingEvents'>;
+
+export const GuildsHome: FC = () => {
+  const [events, setEvents] = useState<GuildData[]>([]);
 
   useEffect(() => {
-    const fields: (keyof EventData)[] = [
-      'name',
-      'description',
-      'interestedGuildNames',
-    ];
+    const fields: (keyof GuildData)[] = ['name', 'interestingEvents'];
     const query = fields.map((field) => `fields=${field}`).join('&');
 
-    axiosClient.api.get<EventData[]>(`/events?${query}`).then(({ data }) => {
+    axiosClient.api.get<GuildData[]>(`/guilds?${query}`).then(({ data }) => {
       setEvents(data);
     });
   }, []);
 
   return (
     <>
-      <NavLink to="/events/create" className={s.addEventLink}>
-        <PlusCircleOutlined />
-      </NavLink>
+      <h1 className={s.title}>Your guild</h1>
       {events.length ? (
         <>
           <List

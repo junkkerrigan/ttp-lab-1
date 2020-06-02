@@ -1,9 +1,28 @@
 @import "../../styles/variables";
 
-.link {
+.categoryLink {
   color: $whiteColor;
 
   &:hover {
     color: $whiteColor;
   }
+}
+
+.homeLink {
+  color: $whiteColor;
+  margin-right: 10px;
+
+  &:hover {
+    color: $whiteColor;
+  }
+}
+
+.angleIcon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
 }

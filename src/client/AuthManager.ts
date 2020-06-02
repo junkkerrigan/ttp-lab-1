@@ -1,9 +1,8 @@
-import { AxiosInstance } from 'axios';
-import { axiosClient } from './axiosClient';
 import {
   AuthenticationResponse,
   UserCredentials,
 } from '../types/authentication';
+import { axiosClient, AxiosClient } from './axiosClient';
 
 interface CacheStorage {
   getItem(key: string): string | null;
@@ -12,16 +11,20 @@ interface CacheStorage {
 }
 
 interface AuthManagerInitialOptions {
-  axiosInstance?: AxiosInstance;
+  axiosInstance?: AxiosClient;
   cacheStorage?: CacheStorage;
 }
 
-export class AuthError extends Error {}
+export class AuthError extends Error {
+  constructor(public incorrectField?: keyof UserCredentials) {
+    super();
+  }
+}
 
-class AuthManager {
+export class AuthManager {
   private readonly tokenKey = 'authToken';
-  private readonly authBaseUrl = '/auth';
-  private readonly axiosClient: AxiosInstance;
+  private readonly authBaseUrl = '/_auth';
+  private readonly axiosClient: AxiosClient;
   private readonly cacheStorage: CacheStorage;
 
   constructor(overrideOptions?: AuthManagerInitialOptions) {
@@ -36,12 +39,30 @@ class AuthManager {
   }
 
   async authenticate(credentials: UserCredentials) {
-    const { data } = await this.axiosClient.post<AuthenticationResponse>(
-      this.authBaseUrl,
+    const {
+      data: { success, data },
+    } = await this.axiosClient.auth.post<AuthenticationResponse>(
+      '/',
       credentials,
     );
 
-    return data;
+    const { token, incorrectFields } = data || {};
+    if (!success) {
+      if (incorrectFields?.includes('username')) {
+        throw new AuthError('username');
+      }
+      if (incorrectFields?.includes('password')) {
+        throw new AuthError('password');
+      }
+      throw new AuthError();
+    }
+
+    this.axiosClient.updateDefaults({
+      headers: {
+        Authorization: token,
+      },
+    });
+    this.saveToken(token!);
   }
 
   saveToken(token: string) {
@@ -50,16 +71,3 @@ class AuthManager {
 }
 
 export const authManager = new AuthManager();
-
-/*
-
-1. request from browser to my server
-
-2. my server responds with client app
-
-3. client app goes to local storage and check for token
-
-4. 1) token is absent -> request to my server with this token -> server authenticates user and responds with data
-   2) token isn't absent -> redirect to /login -> user logs in -> server responds with token -> save token
-
-*/
