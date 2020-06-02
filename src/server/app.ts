@@ -3,7 +3,7 @@ import cors from 'cors';
 import jwtAuth from 'express-jwt';
 
 import { models } from '../db';
-import { apiRouter, authRouter } from './routers';
+import { apiRouter, authRouter, registerRouter } from './routers';
 
 const app = express();
 
@@ -19,6 +19,7 @@ app.use(async (req, res, next) => {
   next();
 });
 
+app.use('/_register', registerRouter);
 app.use('/_auth', authRouter);
 app.use(
   '/_api',

@@ -1,19 +1,40 @@
-import { Store } from 'antd/lib/form/interface';
 import React, { FC, useState } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
 
+import { UserData } from '../../../types/registration';
+import { RegistrationError, userManager } from '../../UserManager';
 import { RegisterForm } from '../RegisterForm';
 import { Page } from '../Page';
 
 import s from './Register.scss';
-import { Typography } from 'antd';
 
 export const Register: FC = () => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleFormSubmitSuccess = (values: Store) => {
-    setIsLoggedIn(true);
+  const handleFormSubmitSuccess = async (data: UserData) => {
+    try {
+      console.log(1);
+      await userManager.register(data);
+      setIsLoggedIn(true);
+    } catch (e) {
+      console.log(2);
+      if (e instanceof RegistrationError) {
+        if (e.message) {
+          setError('Error: please, enter valid email');
+        } else {
+          if (e.badField === 'email') {
+            setError('Error: email is busy');
+          } else if (e.badField === 'username') {
+            setError('Error: username is busy');
+          } else {
+            setError(
+              'Something went wrong, try to refresh the page or check your internet connection',
+            );
+          }
+        }
+      }
+    }
   };
 
   return (
@@ -24,7 +45,10 @@ export const Register: FC = () => {
           <br />
           create an account:
         </h1>
-        <RegisterForm onSubmit={handleFormSubmitSuccess} />
+        <RegisterForm
+          onSubmit={handleFormSubmitSuccess}
+          {...(error && { error })}
+        />
         <p className={s.loginText}>
           ...or
           <NavLink to="/login"> log in </NavLink>

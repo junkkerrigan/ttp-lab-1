@@ -1,12 +1,13 @@
 import { Router } from 'express';
 
+import { authRouter } from './auth';
+import { registerRouter } from './register';
 import { usersRouter } from './users';
 import { productsRouter } from './products';
 import { openSourceProjectsRouter } from './open-source-projects';
 import { guildsRouter } from './guilds';
 import { companiesRouter } from './companies';
 import { eventsRouter } from './events';
-import { authRouter } from './auth';
 
 const v1Router = Router();
 
@@ -19,5 +20,6 @@ v1Router.use('/events', eventsRouter);
 
 const router = Router().use('/v1', v1Router);
 
-export { router as apiRouter };
+export { registerRouter };
 export { authRouter };
+export { router as apiRouter };

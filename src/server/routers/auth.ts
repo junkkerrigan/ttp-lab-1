@@ -10,21 +10,6 @@ import {
 
 const router = Router();
 
-router.get('/createUser', async (req, res) => {
-  try {
-    const { cUsername, cPassword } = req.query;
-    if (cUsername && cPassword) {
-      await req.context.models.User.create({
-        username: cUsername,
-        password: cPassword,
-      });
-    }
-    res.sendStatus(200);
-  } catch (e) {
-    res.sendStatus(400);
-  }
-});
-
 router.post<any, AuthenticationResponse, AuthenticationRequest>(
   '/',
   async (req, res) => {
@@ -41,7 +26,7 @@ router.post<any, AuthenticationResponse, AuthenticationRequest>(
         return res.status(200).send({
           success: false,
           data: {
-            incorrectFields: ['username'],
+            badFields: ['username'],
           },
         });
       }
@@ -52,7 +37,7 @@ router.post<any, AuthenticationResponse, AuthenticationRequest>(
         return res.status(200).send({
           success: false,
           data: {
-            incorrectFields: ['password'],
+            badFields: ['password'],
           },
         });
       }

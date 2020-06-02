@@ -14,6 +14,8 @@ export interface IUserModelConstructor extends IBaseModelConstructor {
 }
 
 export class UserModel extends BaseModel implements IUserModel {
+  public name?: string;
+  public email!: string;
   public username!: string;
   public password!: string;
   public status?: string;
@@ -37,6 +39,19 @@ export class UserModel extends BaseModel implements IUserModel {
 
 UserModel.initModel<UserModel>(
   {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+      validate: {
+        isEmail: {
+          msg: 'isNotEmail',
+        },
+      },
+    },
     username: {
       type: DataTypes.STRING,
       unique: true,

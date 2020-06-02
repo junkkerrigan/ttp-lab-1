@@ -18,11 +18,11 @@ export const Login: FC = () => {
       setIsLoggedIn(true);
     } catch (e) {
       if (e instanceof AuthError) {
-        const { incorrectField } = e;
+        const { badField } = e;
 
-        if (incorrectField) {
+        if (badField) {
           const message =
-            incorrectField === 'username'
+            badField === 'username'
               ? 'Error: no such username'
               : 'Error: wrong password';
           setError(message);

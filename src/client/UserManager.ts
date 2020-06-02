@@ -3,6 +3,7 @@ import {
   UserCredentials,
 } from '../types/authentication';
 import { axiosClient, AxiosClient } from './axiosClient';
+import { RegistrationResponse, UserData } from '../types/registration';
 
 interface CacheStorage {
   getItem(key: string): string | null;
@@ -15,8 +16,14 @@ interface UserManagerInitialOptions {
   cacheStorage?: CacheStorage;
 }
 
+export class RegistrationError extends Error {
+  constructor(public badField?: keyof UserData, message?: string) {
+    super(message);
+  }
+}
+
 export class AuthError extends Error {
-  constructor(public incorrectField?: keyof UserCredentials) {
+  constructor(public badField?: keyof UserCredentials) {
     super();
   }
 }
@@ -41,6 +48,42 @@ export class UserManager {
     return this.cacheStorage.getItem(this.tokenKey) !== null;
   }
 
+  async register(userData: UserData) {
+    console.log(111);
+    try {
+      const response = await this.axiosClient.registration.post<
+        RegistrationResponse
+      >('/', userData);
+      console.log(222);
+      const {
+        data: { success, data },
+      } = response;
+      console.log(response);
+
+      const { token, badFields } = data || {};
+      if (!success) {
+        if (badFields && badFields.length) {
+          badFields.forEach((item) => {
+            if (typeof item !== 'string') {
+              throw new RegistrationError('email', 'isNotEmail');
+            }
+            if (item === 'email') {
+              throw new RegistrationError('email');
+            }
+            throw new RegistrationError('username');
+          });
+        }
+        throw new RegistrationError();
+      }
+
+      this.axiosClient.updateAuthHeader(token);
+      this.token = token!;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }
+
   async authenticate(credentials: UserCredentials) {
     const {
       data: { success, data },
@@ -49,12 +92,12 @@ export class UserManager {
       credentials,
     );
 
-    const { token, incorrectFields } = data || {};
+    const { token, badFields } = data || {};
     if (!success) {
-      if (incorrectFields?.includes('username')) {
+      if (badFields?.includes('username')) {
         throw new AuthError('username');
       }
-      if (incorrectFields?.includes('password')) {
+      if (badFields?.includes('password')) {
         throw new AuthError('password');
       }
       throw new AuthError();

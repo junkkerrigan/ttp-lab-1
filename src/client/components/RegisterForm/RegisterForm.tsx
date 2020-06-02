@@ -1,12 +1,13 @@
 import { Form, Input, Checkbox, Button } from 'antd';
-import { Store } from 'antd/lib/form/interface';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
+
+import { UserData } from '../../../types/registration';
 
 import s from './RegisterForm.scss';
 
 interface RegisterFormProps {
   error?: string | null;
-  onSubmit(values: Store): void;
+  onSubmit(values: UserData): void;
 }
 
 const layout = {
@@ -21,9 +22,9 @@ export const RegisterForm: FC<RegisterFormProps> = ({ error, onSubmit }) => {
   return (
     <Form
       {...layout}
-      name="login"
+      name="register"
       initialValues={{ remember: true }}
-      onFinish={onSubmit}
+      onFinish={onSubmit as any}
       className={s.form}
     >
       <Form.Item label="Name" name="name" className={s.textInput}>
@@ -53,7 +54,7 @@ export const RegisterForm: FC<RegisterFormProps> = ({ error, onSubmit }) => {
       >
         <Input.Password />
       </Form.Item>
-      {error !== null && error}
+      {error}
       <Form.Item {...tailLayout} name="remember" valuePropName="checked">
         <Checkbox>Remember me</Checkbox>
       </Form.Item>
