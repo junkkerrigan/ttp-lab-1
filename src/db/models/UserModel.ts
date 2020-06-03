@@ -19,11 +19,14 @@ export class UserModel extends BaseModel implements IUserModel {
   public username!: string;
   public password!: string;
   public status?: string;
+  public guildId?: number;
 
   static associate(models: ProjectModelsStore) {
-    this.hasMany(models.Device, { foreignKey: 'user' });
-    this.belongsTo(models.Guild, { foreignKey: 'guild' });
-    this.belongsTo(models.Product, { foreignKey: 'product' });
+    this.hasMany(models.Device, { foreignKey: 'userId' });
+    this.hasMany(models.Event, { foreignKey: 'userId' });
+    this.associations.Product = this.belongsTo(models.Product, {
+      foreignKey: 'productId',
+    });
     this.belongsToMany(models.OpenSourceProject, {
       through: Maintenance,
       foreignKey: 'maintainerId',
@@ -61,6 +64,10 @@ UserModel.initModel<UserModel>(
     },
     status: {
       type: DataTypes.STRING,
+      allowNull: true,
+    },
+    guildId: {
+      type: DataTypes.BIGINT,
       allowNull: true,
     },
   },

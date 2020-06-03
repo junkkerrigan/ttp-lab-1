@@ -1,9 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Button, Form, Input, Select } from 'antd';
-import { Event, Guild } from '../../../types/domain';
 
-import s from './CreateEvent.scss';
+import { Guild } from '../../../types/domain';
 import { axiosClient } from '../../axiosClient';
+
+import s from './CreateGuild.scss';
 
 const layout = {
   labelCol: { offset: 2, span: 4 },
@@ -13,40 +14,41 @@ const tailLayout = {
   wrapperCol: { offset: 6, span: 16 },
 };
 
-type GuildData = Pick<Guild, 'name'> & { id: number };
-
-export const CreateEvent: FC = () => {
-  const [guilds, setGuilds] = useState<GuildData[]>([]);
+export const CreateGuild: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    axiosClient.api
-      .get<GuildData[]>('/guilds?fields=id&fields=name')
-      .then(({ data }) => setGuilds(data));
-  }, []);
-
-  const handleSubmit = async (eventData: Event) => {
+  const handleSubmit = async (guildData: Guild) => {
     try {
-      await axiosClient.api.post('/events', eventData);
+      await axiosClient.api.post('/guilds', guildData);
 
       form.resetFields(['name', 'description']);
 
       setError(null);
-      setMessage('Event successfully created!');
-      setTimeout(() => setMessage(null), 5000);
+      setMessage('New guild successfully created!');
+      setTimeout(() => {
+        setMessage(null);
+        location.reload();
+      }, 3000);
     } catch (e) {
-      let failedField = '';
-      if (e.response?.data?.includes('name')) {
-        failedField = 'name';
-      } else if (e.response?.data?.includes('description')) {
-        failedField = 'description';
+      let badField = '';
+      let createErrorMessage = (badFieldResolved: string) =>
+        `Error: ${badFieldResolved} is too long.`;
+
+      if (e.response?.data?.includes('nameTooLong')) {
+        badField = 'name';
+      } else if (e.response?.data?.includes('name')) {
+        badField = 'name';
+        createErrorMessage = (badFieldResolved) =>
+          `Error: ${badFieldResolved} is busy`;
+      } else if (e.response?.data?.includes('descriptionTooLong')) {
+        badField = 'description';
       }
 
-      const errorMessage = failedField
-        ? `Error: ${failedField} is too long.`
-        : 'Something went wrong;( Try to resend form.';
+      const errorMessage = badField
+        ? createErrorMessage(badField)
+        : 'Something went wrong. Check your internet connection and try to resubmit.';
       setMessage(null);
       setError(errorMessage);
     }
@@ -54,38 +56,28 @@ export const CreateEvent: FC = () => {
 
   return (
     <div className={s.container}>
-      <h1 className={s.title}>Create an event:</h1>
+      <h1 className={s.title}>
+        It seems like you are not the member of any guild right now.
+        <br />
+        But it's easy to fix by creating your own one!
+      </h1>
       <Form
         form={form}
         {...layout}
-        name="create-event"
+        name="create-guild"
         onFinish={handleSubmit as any}
         className={s.form}
       >
         <Form.Item
           label="Name"
           name="name"
-          rules={[{ required: true, message: 'Please, enter event name!' }]}
+          rules={[{ required: true, message: 'Please, enter guild name!' }]}
           className={s.input}
         >
           <Input />
         </Form.Item>
         <Form.Item label="Description" name="description">
           <Input.TextArea className={s.textArea} />
-        </Form.Item>
-        <Form.Item label="Interested guilds" name="interestedGuildIds">
-          <Select
-            mode="multiple"
-            placeholder="Please, select guilds that may be interested in your event"
-          >
-            {guilds.map(({ id, name }) => {
-              return (
-                <Select.Option key={name} value={id}>
-                  {name}
-                </Select.Option>
-              );
-            })}
-          </Select>
         </Form.Item>
         <Form.Item {...tailLayout} className={s.submitButton}>
           <Button type="primary" htmlType="submit">

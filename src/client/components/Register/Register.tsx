@@ -14,11 +14,9 @@ export const Register: FC = () => {
 
   const handleFormSubmitSuccess = async (data: UserData) => {
     try {
-      console.log(1);
       await userManager.register(data);
       setIsLoggedIn(true);
     } catch (e) {
-      console.log(2);
       if (e instanceof RegistrationError) {
         if (e.message) {
           setError('Error: please, enter valid email');

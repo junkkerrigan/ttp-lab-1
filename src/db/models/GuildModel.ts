@@ -13,11 +13,7 @@ export interface IGuildModelConstructor extends IBaseModelConstructor {
 export class GuildModel extends BaseModel implements IGuildModel {
   name!: string;
   description?: string;
-  interestingEvents!: number[];
-
-  static associate(models: ProjectModelsStore) {
-    GuildModel.hasMany(models.User, { foreignKey: 'guild' });
-  }
+  interestingEventIds!: number[];
 }
 
 GuildModel.initModel(
@@ -25,13 +21,24 @@ GuildModel.initModel(
     name: {
       type: DataTypes.STRING,
       unique: true,
+      validate: {
+        len: {
+          args: [0, 30],
+          msg: 'nameTooLong',
+        },
+      },
     },
     description: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: '',
+      validate: {
+        len: {
+          args: [0, 300],
+          msg: 'descriptionTooLong',
+        },
+      },
     },
-    interestingEvents: {
+    interestingEventIds: {
       type: DataTypes.ARRAY(DataTypes.BIGINT),
       defaultValue: [],
     },

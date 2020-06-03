@@ -1,6 +1,5 @@
-import React, { CSSProperties, FC, useEffect, useState } from 'react';
-import { CategoryHomeLayout } from '../CategoryHomeLayout';
-import { Event, Guild } from '../../../types/domain';
+import React, { FC, useEffect, useState } from 'react';
+import { Event } from '../../../types/domain';
 import { PlusCircleOutlined } from '@ant-design/icons';
 
 import { List } from 'antd';
@@ -27,7 +26,7 @@ export const EventsHome: FC = () => {
     const query = fields.map((field) => `fields=${field}`).join('&');
 
     axiosClient.api
-      .get<EventData[]>(`/events?${query}`)
+      .get<EventData[]>(`/events/getByUser?${query}`)
       .then(({ data, config }) => {
         setEvents(data);
       });

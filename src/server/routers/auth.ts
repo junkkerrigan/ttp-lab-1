@@ -31,7 +31,7 @@ router.post<any, AuthenticationResponse, AuthenticationRequest>(
         });
       }
 
-      const { password: encryptedPassword } = user;
+      const { password: encryptedPassword, id } = user;
       const isPasswordMatch = await bcrypt.compare(password, encryptedPassword);
       if (!isPasswordMatch) {
         return res.status(200).send({
@@ -42,7 +42,7 @@ router.post<any, AuthenticationResponse, AuthenticationRequest>(
         });
       }
 
-      const token = jwt.sign({ username }, req.context.jwtSecret, {
+      const token = jwt.sign({ id }, req.context.jwtSecret, {
         expiresIn: 60 * 60 * 24,
       });
       return res.status(200).send({

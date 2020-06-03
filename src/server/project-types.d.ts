@@ -1,3 +1,4 @@
+import { UserModel } from '../db/models/UserModel';
 import { models } from '../db';
 
 declare global {
@@ -6,6 +7,7 @@ declare global {
       context: {
         jwtSecret: string;
         models: typeof models;
+        user: UserModel;
       };
     }
   }

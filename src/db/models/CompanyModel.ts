@@ -15,7 +15,7 @@ export class CompanyModel extends BaseModel implements ICompanyModel {
   public chief!: string;
 
   static associate(models: ProjectModelsStore) {
-    CompanyModel.hasMany(models.Product, { foreignKey: 'company' });
+    CompanyModel.hasMany(models.Product, { foreignKey: 'companyId' });
   }
 }
 

@@ -1,9 +1,11 @@
-import React, { CSSProperties, FC } from 'react';
-
+import React, { CSSProperties, FC, useState } from 'react';
+import { LogoutOutlined } from '@ant-design/icons';
 import { Page } from '../Page';
+import { HomeCardsList } from '../HomeCardsList';
 
 import s from './Home.scss';
-import { HomeCardsList } from '../HomeCardsList';
+import { Redirect } from 'react-router-dom';
+import { userManager } from '../../UserManager';
 
 const pageStyles: CSSProperties = {
   justifyContent: 'flex-start',
@@ -12,6 +14,12 @@ const pageStyles: CSSProperties = {
 };
 
 export const Home: FC = () => {
+  const [loggedOut, setLoggedOut] = useState(false);
+  const handleLogoutBtnClick = () => {
+    userManager.logOut();
+    setLoggedOut(true);
+  };
+
   return (
     <Page overrideContainerStyles={pageStyles}>
       <h1 className={s.title}>Hello!</h1>
@@ -21,6 +29,10 @@ export const Home: FC = () => {
         Here is the start point of your journey through our site.
       </p>
       <HomeCardsList />
+      <button className={s.logoutBtn} onClick={handleLogoutBtnClick}>
+        <LogoutOutlined />
+      </button>
+      {loggedOut && <Redirect to="/login" />}
     </Page>
   );
 };

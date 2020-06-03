@@ -2,8 +2,9 @@ import { DataTypes, Op } from 'sequelize';
 
 import { Event } from '../../types/domain';
 import { BaseModel, IBaseModel, IBaseModelConstructor } from './BaseModel';
-import { models } from '../store';
+import { models, ProjectModelsStore } from '../store';
 import { GuildModel } from './GuildModel';
+import { UserModel } from './UserModel';
 
 export interface IEventModel extends IBaseModel, Event {}
 
@@ -14,8 +15,16 @@ export interface IEventConstructor extends IBaseModelConstructor {
 export class EventModel extends BaseModel implements IEventModel {
   name!: string;
   description?: string;
-  interestedGuilds!: number[];
+  interestedGuildIds!: number[];
   interestedGuildNames!: string[];
+  user!: UserModel;
+
+  /* eslint-disable-next-line */
+  static associate(models: ProjectModelsStore) {
+    EventModel.associations.User = EventModel.belongsTo(models.User, {
+      foreignKey: 'userId',
+    });
+  }
 }
 
 EventModel.initModel<EventModel>(
@@ -39,7 +48,7 @@ EventModel.initModel<EventModel>(
         },
       },
     },
-    interestedGuilds: {
+    interestedGuildIds: {
       type: DataTypes.ARRAY(DataTypes.BIGINT),
       defaultValue: [],
     },
@@ -50,15 +59,30 @@ EventModel.initModel<EventModel>(
   },
   {
     hooks: {
-      beforeCreate: async (event) => {
+      afterCreate: async (event) => {
+        const interestedGuildIds = event.interestedGuildIds.map((id) =>
+          Number(id),
+        );
         const guilds = await models.Guild.findAll<GuildModel>({
           where: {
             id: {
-              [Op.in]: event.interestedGuilds,
+              [Op.in]: interestedGuildIds,
             },
           },
         });
-        event.interestedGuildNames = guilds.map((guild) => guild.name);
+        await event.set(
+          'interestedGuildNames',
+          guilds.map((guild) => guild.name),
+        );
+        await event.save();
+
+        for (const guild of guilds) {
+          await guild.set('interestingEventIds', [
+            ...guild.interestingEventIds,
+            event.id,
+          ]);
+          await guild.save();
+        }
       },
     },
     tableName: 'events',

@@ -1,5 +1,6 @@
 import { Form, Input, Checkbox, Button } from 'antd';
 import React, { FC } from 'react';
+import classnames from 'classnames';
 
 import { UserData } from '../../../types/registration';
 
@@ -19,6 +20,10 @@ const tailLayout = {
 };
 
 export const RegisterForm: FC<RegisterFormProps> = ({ error, onSubmit }) => {
+  const errorClassName = classnames(s.errorContainer, {
+    [s.hidden]: !error,
+  });
+
   return (
     <Form
       {...layout}
@@ -54,7 +59,9 @@ export const RegisterForm: FC<RegisterFormProps> = ({ error, onSubmit }) => {
       >
         <Input.Password />
       </Form.Item>
-      {error}
+      <Form.Item {...tailLayout} className={errorClassName}>
+        <span className={s.error}>{error}</span>
+      </Form.Item>
       <Form.Item {...tailLayout} name="remember" valuePropName="checked">
         <Checkbox>Remember me</Checkbox>
       </Form.Item>

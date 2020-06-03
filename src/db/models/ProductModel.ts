@@ -15,8 +15,10 @@ export class ProductModel extends BaseModel implements IProductModel {
   public description?: string;
 
   static associate(models: ProjectModelsStore) {
-    ProductModel.belongsTo(models.Company, { foreignKey: 'company' });
-    ProductModel.hasMany(models.User, { foreignKey: 'product' });
+    ProductModel.associations.Company = ProductModel.belongsTo(models.Company, {
+      foreignKey: 'companyId',
+    });
+    ProductModel.hasMany(models.User, { foreignKey: 'productId' });
   }
 }
 

@@ -5,7 +5,9 @@ import { Card, List, Tag } from 'antd';
 import s from './EventCard.scss';
 import { EventData } from '../EventsHome';
 
-interface EventCardProps extends Partial<EventData> {}
+interface EventCardProps extends Partial<EventData> {
+  currentGuildName?: string;
+}
 
 const MAX_DESCRIPTION_TEXT_LENGTH = 150;
 
@@ -13,6 +15,7 @@ export const EventCard: FC<EventCardProps> = ({
   description,
   name,
   interestedGuildNames,
+  currentGuildName,
 }) => {
   let descriptionText = description?.slice(0, MAX_DESCRIPTION_TEXT_LENGTH);
   if ((description?.length || 0) > MAX_DESCRIPTION_TEXT_LENGTH) {
@@ -27,18 +30,37 @@ export const EventCard: FC<EventCardProps> = ({
           <p className={s.description}>{descriptionText}</p>
         </>
       )}
-      {interestedGuildNames && interestedGuildNames.length !== 0 && (
-        <>
-          <p className={s.sectionTitle}>Interesting for guilds:</p>
-          {interestedGuildNames.map((guildName) => {
-            return (
-              <Tag key={guildName} className={s.guildTag}>
-                {guildName}
-              </Tag>
-            );
-          })}
-        </>
-      )}
+      {currentGuildName &&
+        interestedGuildNames &&
+        interestedGuildNames.length > 1 && (
+          <>
+            <p className={s.sectionTitle}>Also interesting for guilds:</p>
+            {interestedGuildNames.map((guildName) => {
+              if (guildName === currentGuildName) {
+                return null;
+              }
+              return (
+                <Tag key={guildName} className={s.guildTag}>
+                  {guildName}
+                </Tag>
+              );
+            })}
+          </>
+        )}
+      {!currentGuildName &&
+        interestedGuildNames &&
+        interestedGuildNames.length !== 0 && (
+          <>
+            <p className={s.sectionTitle}>Interesting for guilds:</p>
+            {interestedGuildNames.map((guildName) => {
+              return (
+                <Tag key={guildName} className={s.guildTag}>
+                  {guildName}
+                </Tag>
+              );
+            })}
+          </>
+        )}
     </Card>
   );
 };

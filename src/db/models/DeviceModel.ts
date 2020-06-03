@@ -16,7 +16,9 @@ export class DeviceModel extends BaseModel implements IDeviceModel {
   public model!: string;
 
   static associate(models: ProjectModelsStore) {
-    DeviceModel.belongsTo(models.User, { foreignKey: 'user' });
+    DeviceModel.associations.User = DeviceModel.belongsTo(models.User, {
+      foreignKey: 'userId',
+    });
   }
 }
 

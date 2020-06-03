@@ -33,17 +33,16 @@ router.post<any, RegistrationResponse, RegistrationRequest>(
       body: { name, email, username, password },
     } = req;
     try {
-      await req.context.models.User.create<UserModel>({
+      const { id } = await req.context.models.User.create<UserModel>({
         name,
         email,
         username,
         password,
       });
 
-      const token = jwt.sign({ username }, req.context.jwtSecret, {
+      const token = jwt.sign({ id }, req.context.jwtSecret, {
         expiresIn: 60 * 60 * 24,
       });
-      console.log(token);
       return res.status(200).send({
         success: true,
         data: {
@@ -51,8 +50,7 @@ router.post<any, RegistrationResponse, RegistrationRequest>(
         },
       });
     } catch (e) {
-      console.log(e);
-      const message: string = e.message;
+      const message: string = e.errors?.length && e.errors[0].message;
 
       if (message.includes('isNotEmail')) {
         return res.status(200).send({

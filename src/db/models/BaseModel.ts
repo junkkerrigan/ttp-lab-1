@@ -18,6 +18,7 @@ export interface IBaseModel {
 
 export interface IBaseModelConstructor extends ModelCtor<BaseModel> {
   associate(models: ProjectModelsStore): void;
+  associations: Record<string, any>;
   initModel(attributes: ModelAttributes, options: Partial<InitOptions>): void;
 }
 

@@ -49,16 +49,13 @@ export class UserManager {
   }
 
   async register(userData: UserData) {
-    console.log(111);
     try {
       const response = await this.axiosClient.registration.post<
         RegistrationResponse
       >('/', userData);
-      console.log(222);
       const {
         data: { success, data },
       } = response;
-      console.log(response);
 
       const { token, badFields } = data || {};
       if (!success) {
@@ -79,7 +76,6 @@ export class UserManager {
       this.axiosClient.updateAuthHeader(token);
       this.token = token!;
     } catch (e) {
-      console.log(e);
       throw e;
     }
   }
@@ -105,6 +101,10 @@ export class UserManager {
 
     this.axiosClient.updateAuthHeader(token);
     this.token = token!;
+  }
+
+  logOut() {
+    this.cacheStorage.removeItem(this.tokenKey);
   }
 
   get token() {

@@ -1,1 +1,0 @@
-export { GuildsHome } from './GuildsHome';

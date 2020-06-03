@@ -14,7 +14,7 @@ import { EventsHome } from '../EventsHome';
 import { CategoryHomeLayout } from '../CategoryHomeLayout';
 import { CreateEvent } from '../CreateEvent';
 import { CategoryHomeHeaderLink } from '../CategoryHomeHeaderLink';
-import { GuildsHome } from '../GuildsHome';
+import { GuildPage } from '../GuildPage';
 import { userManager } from '../../UserManager';
 import { axiosClient } from '../../axiosClient';
 
@@ -61,7 +61,7 @@ export const App: FC = () => {
             centerContent
             title={<CategoryHomeHeaderLink text="Your guild" link="/guild" />}
           >
-            <Route exact path="/guild" component={GuildsHome} />
+            <Route exact path="/guild" component={GuildPage} />
           </CategoryRoute>
         </ProtectedRoute>
       </Switch>
