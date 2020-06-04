@@ -8,13 +8,23 @@ import { Page } from '../Page';
 
 import s from './Login.scss';
 
+interface LoginFormValues extends UserCredentials {
+  remember: boolean;
+}
+
 export const Login: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleFormSubmitSuccess = async (credentials: UserCredentials) => {
+  const handleFormSubmitSuccess = async (formValues: LoginFormValues) => {
     try {
-      await userManager.authenticate(credentials);
+      if (formValues.remember) {
+        userManager.setCacheStorage(localStorage);
+      } else {
+        userManager.setCacheStorage(sessionStorage);
+      }
+
+      await userManager.authenticate(formValues);
       setIsLoggedIn(true);
     } catch (e) {
       if (e instanceof AuthError) {

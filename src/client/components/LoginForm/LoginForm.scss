@@ -13,3 +13,20 @@
 .submitButton {
   margin-bottom: 0!important;
 }
+
+.hidden {
+  visibility: hidden;
+}
+
+.errorContainer {
+  height: 14px!important;
+  margin: 0!important;
+}
+
+.error {
+  font-size: 18px;
+  color: $redColor!important;
+  position: relative;
+  top: -18px;
+  left: 14px;
+}

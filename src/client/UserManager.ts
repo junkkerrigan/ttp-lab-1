@@ -44,6 +44,10 @@ export class UserManager {
     this.cacheStorage = cacheStorage;
   }
 
+  setCacheStorage(storage: CacheStorage) {
+    this.cacheStorage = storage;
+  }
+
   get isUserAuthenticated() {
     return this.cacheStorage.getItem(this.tokenKey) !== null;
   }

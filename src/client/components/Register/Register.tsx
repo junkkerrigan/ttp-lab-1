@@ -8,13 +8,23 @@ import { Page } from '../Page';
 
 import s from './Register.scss';
 
+interface RegisterFormValues extends UserData {
+  remember: boolean;
+}
+
 export const Register: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleFormSubmitSuccess = async (data: UserData) => {
+  const handleFormSubmitSuccess = async (formValues: RegisterFormValues) => {
     try {
-      await userManager.register(data);
+      if (formValues.remember) {
+        userManager.setCacheStorage(localStorage);
+      } else {
+        userManager.setCacheStorage(sessionStorage);
+      }
+
+      await userManager.register(formValues);
       setIsLoggedIn(true);
     } catch (e) {
       if (e instanceof RegistrationError) {

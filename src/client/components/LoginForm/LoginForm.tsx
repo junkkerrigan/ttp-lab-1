@@ -3,6 +3,7 @@ import { Store } from 'antd/lib/form/interface';
 import React, { FC, useState } from 'react';
 
 import s from './LoginForm.scss';
+import classnames from 'classnames';
 
 interface LoginFormProps {
   error?: string;
@@ -18,6 +19,10 @@ const tailLayout = {
 };
 
 export const LoginForm: FC<LoginFormProps> = ({ error, onSubmit }) => {
+  const errorClassName = classnames(s.errorContainer, {
+    [s.hidden]: !error,
+  });
+
   return (
     <Form
       {...layout}
@@ -42,7 +47,9 @@ export const LoginForm: FC<LoginFormProps> = ({ error, onSubmit }) => {
       >
         <Input.Password />
       </Form.Item>
-      {error}
+      <Form.Item {...tailLayout} className={errorClassName}>
+        <span className={s.error}>{error}</span>
+      </Form.Item>
       <Form.Item {...tailLayout} name="remember" valuePropName="checked">
         <Checkbox>Remember me</Checkbox>
       </Form.Item>
