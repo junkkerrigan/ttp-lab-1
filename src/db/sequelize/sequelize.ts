@@ -8,6 +8,9 @@ export const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   dialect: 'postgres',
 });
 
-export const syncSequelize = async () => {
-  await sequelize.sync({ force: RESET_DB });
+export const syncSequelize = async (overrideOptions?: { force?: boolean }) => {
+  const { force = false } = overrideOptions || {};
+  await sequelize.sync({
+    force: force || RESET_DB,
+  });
 };

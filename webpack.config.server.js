@@ -10,6 +10,7 @@ module.exports = {
   mode: 'development',
   entry: {
     server: ['./src/server/index.ts'],
+    tests: ['./tests/it/api.it.ts'],
   },
   devtool: 'source-map',
   output: {

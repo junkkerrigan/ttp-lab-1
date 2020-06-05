@@ -5,7 +5,7 @@ import { app } from './app';
 
 const port = process.env.SERVER_PORT || 8080;
 
-const startServer = async () => {
+export const startServer = async () => {
   try {
     await syncSequelize();
     app.listen(port, () => {
